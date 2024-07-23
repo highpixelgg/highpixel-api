@@ -11,7 +11,7 @@
     "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",
     "test": "jest --passWithNoTests --config ./jest.config.json",
     "prepare": "husky install",
-    "build": "npm ci && tsup src"
+    "build": "npm i && tsup src"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",
