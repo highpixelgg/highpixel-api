@@ -8,6 +8,6 @@ services:
       - "5672:5672"
       - "15672:15672"
   mailer:
-    image: "fiftydev/mailer"
+    image: "lowracing/mailer" #fiftydev/mailer
     restart: always
-    container_name: "core-mailer"
+    container_name: "LR-mailer" #core-mailer
