@@ -1,11 +1,11 @@
 # Thunder ⚡
 
 ## Introduction
-Thunder is the name of the Core “mothership”, the idea of this system is to take care of the entire platform ecosystem.
+Thunder is the name of LowRacing “mothership”, the idea of this system is to take care of the entire game and platform ecosystem
 
 ## Pre-requisites
 
-[Node.js](https://nodejs.org/) - __Only Version == 20.10.0__ <br>
+[Node.js](https://nodejs.org/) - __Only Version == 20.15.1__ <br>
 [NVM (Node Version Manager)](https://github.com/nvm-sh/nvm) (Recommended) <br>
 [Docker](https://www.docker.com/) <br>
 [Docker Compose](https://docs.docker.com/compose/) <br>
@@ -44,4 +44,4 @@ npm run dev
 
 
 <br><br>
-Made with ❤️ by the Fifty team.
+Made with ❤️ by the Low Racing Team.
