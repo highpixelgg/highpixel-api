@@ -8,7 +8,7 @@
   "author": "JulioDeveloper",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev --ignore-watch node_modules src/server.ts ",
     "test": "jest --passWithNoTests --config ./jest.config.json",
     "prepare": "husky install",
     "build": "npm i && tsup src"
