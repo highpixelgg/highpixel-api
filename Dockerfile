@@ -8,4 +8,4 @@ RUN npm install && npx tsc
 
 CMD npx prisma db push && node build/index.js
 
-EXPOSE 10000
+EXPOSE 3000
