@@ -1,5 +1,4 @@
-import { amqp } from "../../../amqp";
-import { Hasher, Producer } from "../../../infra";
+import { Hasher } from "../../../infra";
 import { makeRecoveryRepository, makeUserRepository, transaction } from "../../../infra/database/repositories";
 import RecoveryReset from "./RecoveryReset";
 import RecoveryResetController from "./RecoveryResetController";

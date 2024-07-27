@@ -1,5 +1,4 @@
-import { amqp } from "../../../amqp";
-import { Hasher, Producer, SecretGenerator } from "../../../infra";
+import { Hasher, SecretGenerator } from "../../../infra";
 import {
   makeEmailVerificationRepository,
   makeUserRepository,
@@ -10,7 +9,6 @@ import SignupController from "./SignupController";
 import SignupDTO from "./SignupDTO";
 
 const makeSignUpController = () => {
-  const MailProducer = new Producer("ACCOUNT_CREATED", amqp);
   const secretGenerator = new SecretGenerator({
     length: 150,
     numbers: true,
@@ -21,7 +19,6 @@ const makeSignUpController = () => {
   const singup = new Signup(
     makeUserRepository(),
     makeEmailVerificationRepository(),
-    MailProducer,
     secretGenerator,
     hasher,
     transaction

@@ -1,32 +1,28 @@
-import { ConfirmChannel } from "amqplib";
-import { Amqp } from "../amqp";
+// import { emailService } from "./services/mailer/transporter";
 
-export default class Producer {
-  private channel!: ConfirmChannel;
-  private exchange: string;
-  private amqp: Amqp;
-  constructor(exchange: string, amqp: Amqp) {
-    this.exchange = exchange;
-    this.amqp = amqp;
-  }
+// interface EmailData {
+//   to: string;
+//   subject: string;
+//   body: string;
+// }
 
-  async start() {
-    if (!this.amqp.connection) {
-      await this.amqp.start();
-    }
-    this.channel = await this.amqp.connection.createConfirmChannel();
-    await this.channel.assertExchange(this.exchange, "fanout", {
-      durable: true,
-    });
-    return this;
-  }
+// export default class Producer {
+//   private exchange: string;
 
-  async publish<T>(data: T) {
-    if (!this.channel) {
-      await this.start();
-    }
-    const message = Buffer.from(JSON.stringify(data));
-    this.channel.publish(this.exchange, "", message, { persistent: true });
-    await this.channel.waitForConfirms();
-  }
-}
+//   constructor(exchange: string) {
+//     this.exchange = exchange;
+//   }
+
+//   async publish<T extends EmailData>(data: T) {
+//     try {
+//       await emailService.send({
+//         to: data.to,
+//         subject: data.subject,
+//         body: data.body,
+//       });
+//       console.log(`Email enviado para ${data.to} com sucesso.`);
+//     } catch (error) {
+//       console.error(`Erro ao enviar email para ${data.to}:`, error);
+//     }
+//   }
+// }
