@@ -6,18 +6,19 @@ import { Transaction } from "../../../infra/database/Transaction";
 import { IEmailVerificationRepository } from "../../../infra/database/interfaces/IEmailVerificationRepository";
 import { IUserRepository } from "../../../infra/database/interfaces/IUserRepository";
 import { IHasher } from "../../../infra/interfaces/IHasher";
-import { IPubliser } from "../../../infra/interfaces/IPublisher";
+// import { IPubliser } from "../../../infra/interfaces/IPublisher";
 import { ISecretGenerator } from "../../../infra/interfaces/ISecretGenerator";
+import { sendRegistrationEmail } from "../../../infra/services/mailer";
 
 export default class Signup implements ISignup {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly emailVerificationRepository: IEmailVerificationRepository,
-    private readonly publisher: IPubliser,
+    // private readonly publisher: IPubliser,
     private readonly secretGenerator: ISecretGenerator,
     private readonly hasher: IHasher,
     private readonly transaction: Transaction
-  ) {}
+  ) { }
   async execute(data: {
     username: string;
     password: string;
@@ -73,15 +74,7 @@ export default class Signup implements ISignup {
     await this.transaction.run(async (tid) => {
       await this.userRepository.save(user, tid);
       await this.emailVerificationRepository.save(emailVerification, tid);
-      await this.publisher.publish({
-        type: "ACCOUNT_CREATED",
-        data: {
-          email,
-          username,
-          secretCode,
-          fullName,
-        },
-      });
+      await sendRegistrationEmail(email, username, secretCode);
     });
   }
 }
