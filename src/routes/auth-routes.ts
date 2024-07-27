@@ -4,8 +4,8 @@ import { LoginDTO, makeLoginController } from "../useCases/auth/login";
 import { SignupDTO, makeSignUpController } from "../useCases/auth/signup";
 import { LogoutDTO, makeLogoutController } from "../useCases/auth/logout";
 import { RecoveryPasswordDTO, makeRecoveryPasswordController } from "../useCases/auth/recovery";
-import { makeRecoveryValidationController } from "../useCases/auth/recovery-validation";
 import { makeRecoveryResetController } from "../useCases/auth/recovery-reset";
+import { makeRecoveryValidationController } from "../useCases/auth/recovery-validation";
 
 export default (router: express.Router) => {
   router.post(

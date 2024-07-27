@@ -1,20 +1,19 @@
-import { PrismaClient } from "@prisma/client";
-import jwt from "jsonwebtoken";
 import { IRecoveryPassword } from "../../../domain/useCases/IRecoveryPassword";
-import { NotFoundError, Unauthorized } from "../../../errors";
+import { NotFoundError } from "../../../errors";
 import { ISecretGenerator } from "../../../infra/interfaces/ISecretGenerator";
-import { IPubliser } from "../../../infra/interfaces/IPublisher";
+// import { IPubliser } from "../../../infra/interfaces/IPublisher";
 import { Transaction } from "../../../infra/database/Transaction";
 import { Recovery } from "../../../domain/entities/Recovery";
 import { IRecoveryRespository } from "../../../infra/database/interfaces/IRecoveryRepository";
-import { IUserRepository } from "../../../infra/database/interfaces/IUserRepository";
+import { IUserRepository } from "../../../infra/database/interfaces/IUserRepository"; 
+import { sendRecoveryEmail } from "../../../infra/services/mailer";
 
 export default class RecoveryPassword implements IRecoveryPassword {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly secretGenerator: ISecretGenerator,
     private readonly transaction: Transaction,
-    private readonly publisher: IPubliser,
+    // private readonly publisher: IPubliser,
     private readonly RecoveryRepository: IRecoveryRespository,
   ) { }
 
@@ -40,16 +39,10 @@ export default class RecoveryPassword implements IRecoveryPassword {
       username: user.username,
       secretCode,
     });
+
     await this.transaction.run(async (tid) => {
       await this.RecoveryRepository.save(recovery, tid);
-      await this.publisher.publish({
-        type: "RECOVERY_PASSWORD",
-        data: {
-          email: user.email,
-          secretCode,
-          username: user.username,
-        },
-      });
+      sendRecoveryEmail(user.email, secretCode, user.username);
     });
   }
 }
