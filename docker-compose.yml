@@ -7,7 +7,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
   mailer:
-    image: "lowracing/mailer" #fiftydev/mailer
+    image: "lowracing/mailer" # ou fiftydev/mailer, dependendo do que você está usando
     restart: always
-    container_name: "LR-mailer" #core-mailer
+    container_name: "LR-mailer" # ou core-mailer
+    command: npm run dev # Ajuste para o comando correto se necessário
+    ports:
+      - "3000:3000" # Se o seu serviço mailer expõe uma porta
