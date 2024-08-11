@@ -5,11 +5,7 @@ Thunder is the name of LowRacing “mothership”, the idea of this system is to
 
 ## Pre-requisites
 
-[Node.js](https://nodejs.org/) - __Only Version == 20.15.1__ <br>
-[NVM (Node Version Manager)](https://github.com/nvm-sh/nvm) (Recommended) <br>
-[Docker](https://www.docker.com/) <br>
-[Docker Compose](https://docs.docker.com/compose/) <br>
-
+[Node.js](https://nodejs.org/) - __Only Version == 20.16.0__ <br>
 
 ## Development
 
@@ -19,20 +15,9 @@ Database: [PostgreSQL](https://www.postgresql.org/)
 
 
 ## Running Project 
-- Make sure you have NVM installed on your machine.
-- Make sure you have Docker and Docker Compose installed on your machine.
-<br/>
-1. Use NVM to ensure you are using the correct version of Node.js. Run the following command in the terminal to use the correct version: <br/> <br/>
-
-```
-nvm use
-```
-<br/>
-2. Create a .env file based on .env.example.
+1. Create a .env file based on .env.example.
 <br/> <br/>
-<br/>
-3. Now all that’s left to do is run the following command to start the API: <br/> <br/>
-
+2. Now all that’s left to do is run the following command to start the API: <br/> <br/>
 ```
 npm run dev
 ```
