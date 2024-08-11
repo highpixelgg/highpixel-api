@@ -30,13 +30,8 @@ nvm use
 <br/>
 2. Create a .env file based on .env.example.
 <br/> <br/>
-3. Start the required services using Docker Compose. You can do this with the following command: <br/> <br/>
-
-```
-docker compose up -d
-```
 <br/>
-4. Now all that’s left to do is run the following command to start the API: <br/> <br/>
+3. Now all that’s left to do is run the following command to start the API: <br/> <br/>
 
 ```
 npm run dev
