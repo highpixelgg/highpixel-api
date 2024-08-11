@@ -29,22 +29,6 @@ export const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASS
   },
 });
 
-// export const sequelize = new Sequelize({
-//   username: "thunder-db_owner",
-//   password: "yLdWfj9a0xNE",
-//   database: "thunder-db",
-//   host: "ep-aged-darkness-a5618g2w.us-east-2.aws.neon.tech",
-//   dialect: "postgres",
-//   logging: false,
-//   dialectOptions: {
-//     project: "ep-aged-darkness-a5618g2w",
-//     ssl: {
-//       require: true,
-//       rejectUnauthorized: false,
-//     }
-//   }
-// });
-
 sequelize.addModels([
   UserModel,
   EmailVerificationModel,
