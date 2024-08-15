@@ -1,0 +1,15 @@
+{
+  "development": {
+    "username": "thunder-db_owner",
+    "password": "yLdWfj9a0xNE",
+    "database": "thunder-db",
+    "host": "ep-aged-darkness-a5618g2w.us-east-2.aws.neon.tech",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}

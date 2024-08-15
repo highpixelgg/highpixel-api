@@ -3,8 +3,8 @@ export const RegistrationMailTask = (email: string, secretCode: string, fullName
   subject: "Ative seu cadastro no LowRacing",
   body: `Hey, ${fullName} Confirme seu e-mail clicando no link abaixo:
   
-  http://localhost:10000/auth/recovery/${secretCode} 
+  http://localhost:10000/auth/active-account/${secretCode} 
   
   Low Racing - Copyright 2024
-`
-});
+  `
+});   
