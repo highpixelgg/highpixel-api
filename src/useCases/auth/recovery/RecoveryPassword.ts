@@ -42,7 +42,7 @@ export default class RecoveryPassword implements IRecoveryPassword {
 
     await this.transaction.run(async (tid) => {
       await this.RecoveryRepository.save(recovery, tid);
-      sendRecoveryEmail(user.email, secretCode, user.username);
+      sendRecoveryEmail(user.email, secretCode, user.fullName);
     });
   }
 }

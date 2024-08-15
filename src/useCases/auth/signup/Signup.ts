@@ -74,7 +74,7 @@ export default class Signup implements ISignup {
     await this.transaction.run(async (tid) => {
       await this.userRepository.save(user, tid);
       await this.emailVerificationRepository.save(emailVerification, tid);
-      await sendRegistrationEmail(email, username, secretCode);
+      await sendRegistrationEmail(user.email, secretCode, user.fullName);
     });
   }
 }
