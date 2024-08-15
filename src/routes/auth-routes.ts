@@ -6,6 +6,7 @@ import { LogoutDTO, makeLogoutController } from "../useCases/auth/logout";
 import { RecoveryPasswordDTO, makeRecoveryPasswordController } from "../useCases/auth/recovery";
 import { makeRecoveryResetController } from "../useCases/auth/recovery-reset";
 import { makeRecoveryValidationController } from "../useCases/auth/recovery-validation";
+import { makeActiveAccountController } from "../useCases/auth/active-account";
 
 export default (router: express.Router) => {
   router.post(
@@ -17,6 +18,10 @@ export default (router: express.Router) => {
     "/auth/register",
     validationMiddleware.handle(SignupDTO),
     makeSignUpController()
+  );
+  router.get(
+    "/auth/active-account/:secretCode",
+    makeActiveAccountController()
   );
   router.delete(
     "/auth/logout",
