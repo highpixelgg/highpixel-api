@@ -1,5 +1,7 @@
 import nodemailer, { Transporter } from "nodemailer";
 import { config } from "dotenv";
+import { Resend } from 'resend';
+export const resend = new Resend(process.env.EMAIL_PASSWORD);
 
 config();
 
@@ -16,18 +18,18 @@ export class EmailService {
       },
       tls: {
         rejectUnauthorized: false
-    }
+      }
     });
   }
 
   async send(params: IMailerServiceParams): Promise<void> {
-    const { to, subject, body } = params;
+    const { to, subject, html } = params;
 
     const mailOptions = {
-      from: `${process.env.DISPLAY_NAME} <${process.env.EMAIL_USERNAME}>`,
+      from: `LowRacing <${process.env.EMAIL_USERNAME}>`,
       to,
       subject,
-      text: body,
+      html,
     };
 
     await this.transporter.sendMail(mailOptions);
@@ -36,6 +38,6 @@ export class EmailService {
 interface IMailerServiceParams {
   to: string;
   subject: string;
-  body: string;
+  html: string;
 }
 export const emailService = new EmailService();
