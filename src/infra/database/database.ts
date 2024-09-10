@@ -9,7 +9,7 @@ config();
 export const initDatabase = async () => { };
 const { DATABASE_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, DATABASE_PROJECTID, DATABASE_PORT } = process.env;
 
-export const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
+export const sequelize = new Sequelize(String(POSTGRES_DB), String(POSTGRES_USER), String(POSTGRES_PASSWORD), {
   host: DATABASE_HOST,
   dialect: "postgres",
   port: 5432,
