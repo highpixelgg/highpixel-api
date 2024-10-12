@@ -1,6 +1,6 @@
 # Thunder ⚡
 ### Preview
-<img src="https://i.postimg.cc/wjVSLDCD/Home.png"/>
+<img src="https://i.postimg.cc/wjVSLDCD/Home.png" width="600"/>
 
 ## Introduction
 Thunder is the name of LowRacing “mothership”, the idea of this system is to take care of the entire game and platform ecosystem
