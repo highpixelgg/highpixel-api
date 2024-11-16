@@ -10,7 +10,7 @@ const startup = async () => {
   app.use(json());
   app.use(cors());
   app.use(cors({
-    origin: 'https://www.lowracing.com'
+    origin: 'http://localhost:3000'
   }));
   app.use(routes());
   app.use(errorHandler);
