@@ -2,14 +2,16 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "outDir": "./dir",
+    "outDir": "dist",
     "esModuleInterop": true,
-    "target": "ES2019",
-    "module": "commonjs"
+    "target": "ES2020",
+    "module": "commonjs",
+    "sourceMap": true,
+    "strict": false,
+    "lib": ["ES6"],
+    "baseUrl": "src/",
+    "skipLibCheck": true
   },
-  "files": [
-    "src/@types/express.d.ts"
-  ],
   "include": [
     "src/**/*.ts"
   ],
