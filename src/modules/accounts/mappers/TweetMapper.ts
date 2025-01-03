@@ -13,15 +13,6 @@ type PersistenceTweetRaw = PersistenceTweet & {
 export class TweetMapper {
   static toDomain(raw: PersistenceTweetRaw): Tweet {
     const user = UserMapper.toDomain(raw.user);
-    const like = raw.tweetLike.map((like) =>
-      TweetLike.create({
-        userId: like.userId,
-        tweetId: like.tweetId,
-        user,
-        tweet,
-      }, like.id)
-    );
-
     const tweet = Tweet.create(
       {
         authorId: raw.authorId,
@@ -29,12 +20,24 @@ export class TweetMapper {
         image: raw.image,
         createdAt: raw.createdAt,
         answerOf: raw.answerOf,
-        user: user,
-        likes: like,
+        user,
+        likes: [],
       },
       raw.id
-    )
-    return tweet
+    );
+
+    const likes = raw.tweetLike.map((like) =>
+      TweetLike.create(
+        {
+          userId: like.userId,
+          tweetId: like.tweetId,
+          user,
+          tweet,
+        },
+        like.id
+      )
+    );
+    return tweet;
   }
 
   static async toPersistence(tweet: Tweet) {

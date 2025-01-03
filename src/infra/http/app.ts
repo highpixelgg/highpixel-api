@@ -1,7 +1,8 @@
-import "express-async-errors";
+import cors from "cors";
+import { config } from 'dotenv';
 import express, { json } from "express";
-import routes from "./routes/index";
-import cors from "cors"
+import routes from "./routes/index.js";
+config();
 
 export const app = express();
 

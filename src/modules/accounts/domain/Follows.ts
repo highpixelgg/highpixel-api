@@ -1,5 +1,5 @@
 import { Follow } from "./Follow";
-import { WatchedList } from "core/domain/WatchedList";
+import { WatchedList } from "../../../core/domain/WatchedList";
 
 export class Follows extends WatchedList<Follow> {
   private constructor(follows: Follow[]) {

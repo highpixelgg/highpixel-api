@@ -4,29 +4,30 @@ import { UserMapper } from "../../mappers/UserMapper";
 import { IUserRepository } from "../IUserRepository";
 
 export class PrismaUsersRepository implements IUserRepository {
-  async exists(userOrEmail: string): Promise<boolean> {
+  async exists(email: string): Promise<boolean> {
     const query = await prisma.user.findFirst({
       where: {
-        OR: [{
-          email: userOrEmail,
-          slug: userOrEmail
-        }]
+        email,
       }
     })
     return !!query
   }
 
-  async findOne(ident: string): Promise<User> {
+  async findOne(email: string): Promise<User> {
     const query = await prisma.user.findFirst({
       where: {
-        OR: [{ email: ident }, { slug: ident }]
+        email
       },
       include: {
         tweets: true,
         likes: true,
       }
     })
-    return 
+
+    if (!query) {
+      return null;
+    }
+    return UserMapper.toDomain(query);
   }
 
   async create(user: User): Promise<void> {

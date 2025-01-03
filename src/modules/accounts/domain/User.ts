@@ -1,8 +1,6 @@
-import { Follow } from "@prisma/client";
 import { Entity } from "../../../core/domain/Entity";
-import { Follows } from "./Follows";
-import { Tweet } from "./Tweet";
 import { Tweets } from "./Tweets";
+import { TweetsLikes } from "./TweetsLikes";
 
 export interface IUserProps {
   slug?: string,
@@ -13,8 +11,8 @@ export interface IUserProps {
   cover?: string,
   bio?: string,
   link?: string,
-  follows?: Follows,
   tweets?: Tweets,
+  tweetsLikes?: TweetsLikes,
 }
 
 export class User extends Entity<IUserProps> {
@@ -54,19 +52,20 @@ export class User extends Entity<IUserProps> {
     return this.props.link
   }
 
-  get follows() {
-    return this.props.follows
-  }
 
   get tweets() {
     return this.props.tweets
   }
 
+  get tweetsLikes() {
+    return this.props.tweetsLikes
+  }
+
   static create(props: IUserProps, id?: string) {
     return new User({
       ...props,
-      follows: props.follows ?? Follows.create([]),
       tweets: props.tweets ?? Tweets.create([]),
+      tweetsLikes: props.tweetsLikes ?? TweetsLikes.create([]),
     });
   }
 }

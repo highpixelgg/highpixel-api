@@ -1,4 +1,4 @@
-import { WatchedList } from "core/domain/WatchedList";
+import { WatchedList } from "../../../core/domain/WatchedList";
 import { Tweet } from "./Tweet";
 
 export class Tweets extends WatchedList<Tweet> {

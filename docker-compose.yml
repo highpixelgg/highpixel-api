@@ -1,28 +1,16 @@
-version: "3.9"
+version: "3.5"
 
 services:
-  database:
+  postgres:
     image: bitnami/postgresql:latest
-    restart: always
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       - POSTGRES_USER=lowracingdev
       - POSTGRES_PASSWORD=lowracing2025
       - POSTGRES_DB=lowracingdev
     volumes:
       - polls_pg_data:/bitnami/postgresql
-
-  app:
-    build: .
-    ports: 
-      - 4000:4000
-    volumes: 
-      - .:/app
-    links:
-      - database
-    depends_on:
-      - database
 
 volumes:
   polls_pg_data:

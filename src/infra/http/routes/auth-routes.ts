@@ -1,7 +1,9 @@
-import express from 'express'
-import { createUserController } from '../../../modules/accounts/useCases/CreateUser';
+import express from 'express';
+import { makeCreateUserController } from 'modules/accounts/useCases/CreateUser';
 
 export default (router: express.Router) => {
-  router.post(
-    "/auth/signup", createUserController.handle);
+  router.post("/auth/signup", makeCreateUserController());
+  router.get('/', (request, response) => {
+    response.send({ message: 'Online' })
+  })
 }

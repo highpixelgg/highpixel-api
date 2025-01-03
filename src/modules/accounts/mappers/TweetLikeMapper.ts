@@ -5,38 +5,36 @@ import { TweetMapper } from "./TweetMapper";
 
 type PersistenceTweetLikeRaw = PersistenceTweetLike & {
   user: PersistenceUser;
-  tweet: PersistenceTweet;  // Tweet aqui é um único tweet, não um array
+  tweet: PersistenceTweet; 
   tweetLike: PersistenceTweetLike[];
 };
 
 export class TweetLikeMapper {
   static toDomain(raw: PersistenceTweetLikeRaw): TweetLike {
     const user = UserMapper.toDomain(raw.user);
-
+  
     const tweet = TweetMapper.toDomain({
       ...raw.tweet,
       user: raw.user,
       tweetLike: raw.tweetLike,
     });
-
-    const tweetLike = TweetLike.create(
+  
+    return TweetLike.create(
       {
         userId: raw.userId,
         tweetId: raw.tweetId,
-        user: user,
-        tweet: tweet
+        user,
+        tweet,
       },
       raw.id
     );
-    return tweetLike;
   }
 
   static async toPersistence(tweetLike: TweetLike) {
     return {
       id: tweetLike.id,
       tweetId: tweetLike.tweetId,
-      user: tweetLike.user,
-      tweet: tweetLike.tweet,
+      userId: tweetLike.userId,
     };
   }
 }

@@ -11,6 +11,7 @@ export class FollowMapper {
     )
     return follow
   }
+  
   static async toPersistence(follow: Follow) {
     return {
       id: follow.id,

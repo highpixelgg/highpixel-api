@@ -7,7 +7,7 @@ export interface ITrend {
 }
 
 export class Trend extends Entity<ITrend> {
-  private constructor(props: ITrend, id?: number) {
+  private constructor(props: ITrend, id?: string) {
     super(props, id)
   }
 

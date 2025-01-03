@@ -3,7 +3,7 @@ import { User } from "../domain/User";
 
 export class UserMapper {
   static toDomain(raw: PersistenceUser): User {
-    const userOrError = User.create({
+    const user = User.create({
       slug: raw.slug,
       email: raw.email,
       password: raw.password,
@@ -13,7 +13,7 @@ export class UserMapper {
       bio: raw.bio,
       link: raw.link,
     }, raw.id)
-    return null
+    return user
   }
 
   static async toPersistence(user: User) {
