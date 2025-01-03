@@ -1,14 +1,14 @@
 import { v4 as uuid } from 'uuid';
 
 export abstract class Entity<T> {
-  protected _id: string | number;
+  protected _id: string;
   public props: T;
 
   get id() {
     return this._id
   }
 
-  constructor(props: T, id?: string | number) {
+  constructor(props: T, id?: string) {
     this._id = id ?? uuid();
     this.props = props;
   }

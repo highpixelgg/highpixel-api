@@ -14,7 +14,8 @@ datasource db {
 }
 
 model User {
-  slug     String      @id
+  id       String      @id
+  slug     String      @unique
   email    String      @unique
   password String
   name     String
@@ -22,37 +23,37 @@ model User {
   cover    String      @default("default.jpg")
   bio      String?
   link     String?
-  tweets   Tweet[]
-  likes    TweetLike[]
+  tweets   Tweet[] @relation("Tweet")
+  likes    TweetLike[] @relation("TweetLike")
 }
 
 model Tweet {
-  id        Int         @id @default(autoincrement())
-  userSlug  String
+  id        String         @id @default(uuid())
+  authorId  String
   body      String
   image     String?
   createdAt DateTime    @default(now())
   answerOf  Int         @default(0)
-  user      User        @relation(fields: [userSlug], references: [slug])
-  likes     TweetLike[]
+  user      User        @relation("Tweet", fields: [authorId], references: [id])
+  likes     TweetLike[] @relation("TweetLike")
 }
 
 model TweetLike {
-  id       Int    @id @default(autoincrement())
-  userSlug String
-  tweetId  Int
-  user     User   @relation(fields: [userSlug], references: [slug])
-  tweet    Tweet  @relation(fields: [tweetId], references: [id])
+  id       String    @id @default(uuid())
+  userId String
+  tweetId  String
+  user     User   @relation("TweetLike", fields: [userId], references: [id])
+  tweet    Tweet  @relation("TweetLike",fields: [tweetId], references: [id])
 }
 
 model Follow {
-  id        Int    @id @default(autoincrement())
+  id        String    @id
   user1Slug String
   user2Slug String
 }
 
 model Trend {
-  id        Int      @id @default(autoincrement())
+  id        String      @id
   hashtag   String
   counter   Int      @default(1)
   updatedAt DateTime @default(now())

@@ -3,19 +3,19 @@ import { Tweet } from "./Tweet";
 import { User } from "./User";
 
 export interface ITweetLike {
-  userSlug: string,
-  tweetId: number,
+  userId: string,
+  tweetId: string,
   user: User,
   tweet: Tweet,
 }
 
 export class TweetLike extends Entity<ITweetLike> {
-  private constructor(props: ITweetLike, id?: number) {
+  private constructor(props: ITweetLike, id?: string) {
     super(props, id)
   }
 
-  get userSlug() {
-    return this.props.userSlug
+  get userId() {
+    return this.props.userId
   }
 
   get tweetId() {
@@ -23,14 +23,15 @@ export class TweetLike extends Entity<ITweetLike> {
   }
 
   get user() {
-    return this.props.tweet
+    return this.props.user
   }
 
   get tweet() {
     return this.props.tweet
   }
 
-  public static create(props: ITweetLike, id: number) {
-    return new TweetLike(props, id)
+  public static create(props: ITweetLike, id?: string) {
+    const tweetLike = new TweetLike(props, id)
+    return tweetLike
   }
 }

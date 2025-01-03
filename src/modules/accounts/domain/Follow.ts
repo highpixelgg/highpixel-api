@@ -6,7 +6,7 @@ export interface IFollow {
 }
 
 export class Follow extends Entity<IFollow> {
-  private constructor(props: IFollow, id?: number) {
+  private constructor(props: IFollow, id?: string) {
     super(props, id)
   }
 
@@ -18,7 +18,7 @@ export class Follow extends Entity<IFollow> {
     return this.props.user2Slug
   }
 
-  public static create(props: IFollow, id?: number): Follow {
+  public static create(props: IFollow, id?: string): Follow {
     const follow = new Follow(props, id);
     return follow
   }
