@@ -10,7 +10,7 @@ const startup = async () => {
   app.use(json());
   app.use(cors());
   app.use(cors({
-    origin: `http://localhost:${process.env.PORT}`
+    origin: "http://localhost:5000"
   }));
   app.use(routes());
 };

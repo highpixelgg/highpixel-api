@@ -12,6 +12,9 @@ export class MailProvider implements IMailProvider {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
       },
+      tls: {
+        rejectUnauthorized: false
+      }
     })
   }
   async sendMail(message: IMessage): Promise<void> {

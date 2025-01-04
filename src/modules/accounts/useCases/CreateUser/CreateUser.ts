@@ -16,13 +16,7 @@ export class CreateUser {
       password, //await bcrypt.hash(password, 10),
     });
 
-    const emailAlreadyExists = await this.usersRepository.exists(user.email);
-
-    if (emailAlreadyExists) {
-      throw new Error("User already exists.");
-    }
-
-    await this.usersRepository.save(user);
+    await this.usersRepository.create(user);
     await this.mailProvider.sendMail({
       to: {
         name: user.name,

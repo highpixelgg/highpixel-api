@@ -52,7 +52,6 @@ export class User extends Entity<IUserProps> {
     return this.props.link
   }
 
-
   get tweets() {
     return this.props.tweets
   }
