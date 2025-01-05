@@ -9,10 +9,18 @@ export const app = express();
 const startup = async () => {
   app.use(json());
   app.use(cors());
-  app.use(cors({
-    origin: "http://localhost:5000"
-  }));
   app.use(routes());
+  app.use(
+    cors({
+      exposedHeaders: ['x-total-count', 'Content-Type', 'Content-Length'],
+    })
+  )
+
+  app.use(
+    express.json({
+      type: ['application/json', 'text/plain'],
+    })
+  )
 };
 
 startup();

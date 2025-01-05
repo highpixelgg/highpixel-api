@@ -5,35 +5,32 @@ import { UserMapper } from "../../mappers/UserMapper";
 import { IUserRepository } from "../IUserRepository";
 
 export class PrismaUsersRepository implements IUserRepository {
-  async exists(email: string): Promise<boolean> {
+  async findUserByEmail(email: string): Promise<boolean> {
     const query = await prisma.user.findFirst({
       where: {
         email,
       }
-    })
-    return !!query
+    });
+    return !!query;
   }
 
   async findUserBySlug(slug: string): Promise<boolean> {
     const query = await prisma.user.findFirst({
       where: {
-        slug
+        slug,
       },
-    })
-    return !!query
+    });
+    return !!query;
   }
 
   async create(user: User): Promise<void> {
     const data = await UserMapper.toPersistence(user);
+
     const existingUser = await prisma.user.findUnique({
       where: {
         email: data.email,
       },
     });
-
-    if (existingUser) {
-      throw new Error('User already exists.');
-    }
 
     let genSlug = true;
     let userSlug = slug(data.name);
@@ -47,16 +44,15 @@ export class PrismaUsersRepository implements IUserRepository {
       }
     }
 
-    data.slug = userSlug
+    data.slug = userSlug;
 
     await prisma.user.create({
       data: {
         ...data,
-        slug: userSlug
-      }
+        slug: userSlug,
+      },
     });
   }
-
 
   async save(user: User): Promise<void> {
     const data = await UserMapper.toPersistence(user);
@@ -64,10 +60,6 @@ export class PrismaUsersRepository implements IUserRepository {
     const existingUser = await prisma.user.findUnique({
       where: { id: data.id },
     });
-
-    if (!existingUser) {
-      throw new Error('Usuário não encontrado para atualização!');
-    }
 
     await prisma.user.update({
       where: {

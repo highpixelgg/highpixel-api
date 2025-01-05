@@ -6,7 +6,12 @@ export class CreateUserController {
 
   async handle(req: Request, res: Response): Promise<Response> {
     const { name, email, password } = req.body;
-    await this.createUser.execute({ name, email, password })
+    const result = await this.createUser.execute({ name, email, password })
+
+    if(result.isLeft()) {
+      return res.status(result.value.statusCode).json(result.value.message)
+    }
+    
     return res.status(201).json({ message: 'Account created successfully' })
   }
 } 
