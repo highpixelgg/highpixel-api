@@ -29,7 +29,7 @@ export class CreateUser {
 
     const emailExists = await this.usersRepository.findUserByEmail(email);
     if (emailExists) {
-      return left(new ParametersErrors("Email already in use.", 400));
+      return left(new ParametersErrors("Email already in use.", 409));
     }
 
     const userOrError = User.create({
