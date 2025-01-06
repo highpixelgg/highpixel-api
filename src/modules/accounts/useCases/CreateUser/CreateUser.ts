@@ -1,5 +1,6 @@
 import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, left, right } from "core/logic/Either";
+import { Token } from "modules/accounts/domain/Token";
 import { IMailProvider } from "../../../../infra/providers/models/IMailProvider";
 import { User } from "../../domain/User";
 import { IUserRepository } from "../../repositories/IUserRepository";
@@ -40,7 +41,15 @@ export class CreateUser {
     if (userOrError.isLeft()) {
       return left(userOrError.value);
     }
+
     const user = userOrError.value;
+
+    const token = Token.create({
+      type: 'activation',
+      user_id: user.id,
+      used: false,
+    })
+    user.addToken(token)
 
     await this.usersRepository.create(user);
     await this.mailProvider.sendMail({
@@ -53,7 +62,7 @@ export class CreateUser {
         email: `${process.env.EMAIL_USERNAME}`
       },
       subject: 'Ative sua conta',
-      body: `<h2>Olá ${user.name}!</h2> <p>Muito obrigado por se registrar no Low Racing! Clique no botão abaixo para verificar seu e-mail. Se você não solicitou este registro recomendamos que entre em contato conosco.</p><br><h4>{ Link }<br><br><h4>Tenha uma otima semana.</h4><br><h4>Feito com amor pela equipe Low Racing.</h4>`
+      body: `<h2>Olá ${user.name}!</h2> <p>Muito obrigado por se registrar no Low Racing! Clique no botão abaixo para verificar seu e-mail. Se você não solicitou este registro recomendamos que entre em contato conosco.</p><br><h4>${token.id}<br><br><h4>Tenha uma otima semana.</h4><br><h4>Feito com amor pela equipe Low Racing.</h4>`
     })
     return right(user)
   }

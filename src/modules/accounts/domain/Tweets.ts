@@ -10,7 +10,7 @@ export class Tweets extends WatchedList<Tweet> {
     return a.equals(b)
   }
 
-  static create(tweets?: Tweet[]):Tweets {
+  public static create(tweets?: Tweet[]):Tweets {
     return new Tweets(tweets || [])
   }
 }

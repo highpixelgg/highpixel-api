@@ -4,9 +4,9 @@ import { UserMapper } from "./UserMapper";
 import { TweetMapper } from "./TweetMapper";
 
 type PersistenceTweetLikeRaw = PersistenceTweetLike & {
-  user: PersistenceUser;
-  tweet: PersistenceTweet; 
-  tweetLike: PersistenceTweetLike[];
+  user?: PersistenceUser;
+  tweet?: PersistenceTweet; 
+  TweetLikes?: PersistenceTweetLike[]; 
 };
 
 export class TweetLikeMapper {
@@ -16,7 +16,7 @@ export class TweetLikeMapper {
     const tweet = TweetMapper.toDomain({
       ...raw.tweet,
       user: raw.user,
-      tweetLike: raw.tweetLike,
+      TweetLikes: raw.TweetLikes,
     });
   
     return TweetLike.create(

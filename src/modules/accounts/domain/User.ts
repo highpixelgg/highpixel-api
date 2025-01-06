@@ -1,7 +1,9 @@
-import { Roles, Tokens } from "@prisma/client";
+import { Roles } from "@prisma/client";
 import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, right } from "core/logic/Either";
 import { Entity } from "../../../core/domain/Entity";
+import { Token } from "./Token";
+import { Tokens } from "./Tokens";
 import { Tweets } from "./Tweets";
 import { TweetsLikes } from "./TweetsLikes";
 
@@ -18,8 +20,9 @@ export interface IUserProps {
   isVerified?: boolean,
   createdAt?: Date,
   role?: Roles,
-  tweets?: Tweets,
-  tweetsLikes?: TweetsLikes,
+  Tweet?: Tweets,
+  TweetLike?: TweetsLikes,
+  Tokens?: Tokens;
 }
 
 export class User extends Entity<IUserProps> {
@@ -59,12 +62,12 @@ export class User extends Entity<IUserProps> {
     return this.props.link
   }
 
-  get tweets() {
-    return this.props.tweets
+  get Tweet() {
+    return this.props.Tweet
   }
 
-  get tweetsLikes() {
-    return this.props.tweetsLikes
+  get TweetLike() {
+    return this.props.TweetLike
   }
 
   get isPremium() {
@@ -76,14 +79,31 @@ export class User extends Entity<IUserProps> {
   }
 
   get createdAt() {
-    return this.createdAt
+    return this.props.createdAt
+  }
+
+  get role() {
+    return this.props.role
+  }
+
+  get Tokens() {
+    return this.props.Tokens
+  }
+
+  public addToken(token: Token) {
+    this.Tokens.add(token)
+  }
+
+  public removeToken(token: Token) {
+    this.Tokens.remove(token)
   }
 
   static create(props: IUserProps, id?: string): Either<ParametersErrors, User> {
     const user = new User({
       ...props,
-      tweets: props.tweets ?? Tweets.create([]),
-      tweetsLikes: props.tweetsLikes ?? TweetsLikes.create([]),
+      Tweet: props.Tweet ?? Tweets.create([]),
+      TweetLike: props.TweetLike ?? TweetsLikes.create([]),
+      Tokens: props.Tokens ?? Tokens.create([]),
     });
 
     return right(user)

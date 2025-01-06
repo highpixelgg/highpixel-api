@@ -6,10 +6,10 @@ export interface ITweet {
   authorId: string,
   body: string,
   image?: string,
-  createdAt: Date,
-  answerOf: number,
+  createdAt?: Date,
+  answerOf?: number,
   user: User,
-  likes: TweetLike[],
+  tweetLikes?: TweetLike[],
 }
 
 export class Tweet extends Entity<ITweet> {
@@ -41,8 +41,8 @@ export class Tweet extends Entity<ITweet> {
     return this.props.user
   }
 
-  get likes() {
-    return this.props.likes
+  get tweetLikes() {
+    return this.props.tweetLikes
   }
 
   public static create(props: ITweet, id?: string): Tweet {

@@ -1,14 +1,15 @@
-## Either Handling Error ✅
-## SMTP ✅
-## Email Template SMTP 
-## Change Error Or StatusCode in CreateAccount
-## Email Verification, UserVerified and Active Account Route
-## Create entities for properties User (jwt, password, slug, token, tokens, name, email)
+Session Entitie is Jwt Entitie?
+
+## 0 - Create new Repositories for entities (Trend, Follow) ⏳
+## 2 - Active Account Route ⏳ (https://github.com/lowpixelgg/saturn/blob/main/src/modules/http/accounts/useCases/ActivateUser/ActivateController.ts)
+## 3 - Create entities for properties User (jwt, password, slug, name, email) ⏳
 
 
-## hash password 
+## 1 - hash password and token email not expiress
+## 2 - Email Template SMTP 
+## 3 - Change Error Or StatusCode in CreateAccount (https://github.com/diego3g/umbriel/blob/master/src/core/infra/HttpResponse.ts)
 
 ## in memory
 ## DDD
-### TDD
-### Docker problem not running image application and persisting data
+### TDD - Aula
+### Docker image project

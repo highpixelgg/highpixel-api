@@ -1,10 +1,19 @@
+import { Prisma } from "@prisma/client";
 import slug from "slug";
 import { prisma } from "../../../../infra/prisma/prisma-client";
 import { User } from "../../domain/User";
 import { UserMapper } from "../../mappers/UserMapper";
+import { ITokensRepository } from "../ITokensRepository";
+import { ITweetsLikesRepository } from "../ITweetsLikesRepository";
+import { ITweetsRepository } from "../ITweetsRepository";
 import { IUserRepository } from "../IUserRepository";
 
 export class PrismaUsersRepository implements IUserRepository {
+  constructor(
+    private TweetsRepositoy?: ITweetsRepository,
+    private TweetsLikesRepository?: ITweetsLikesRepository,
+    private tokensRepository?: ITokensRepository,
+  ) { }
   async findUserByEmail(email: string): Promise<boolean> {
     const query = await prisma.user.findFirst({
       where: {
@@ -23,14 +32,34 @@ export class PrismaUsersRepository implements IUserRepository {
     return !!query;
   }
 
-  async create(user: User): Promise<void> {
+  async save(user: User): Promise<void> {
     const data = await UserMapper.toPersistence(user);
 
-    const existingUser = await prisma.user.findUnique({
+    await prisma.user.findUnique({
+      where: { id: data.id },
+    });
+
+    await prisma.user.update({
       where: {
-        email: data.email,
+        id: data.id,
+      },
+      data: {
+        ...data,
       },
     });
+  }
+
+  async update(userId: string, data: Prisma.UserUpdateInput): Promise<void> {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data,
+    });
+  }
+
+  async create(user: User): Promise<void> {
+    const data = await UserMapper.toPersistence(user);
 
     let genSlug = true;
     let userSlug = slug(data.name);
@@ -43,7 +72,6 @@ export class PrismaUsersRepository implements IUserRepository {
         genSlug = false;
       }
     }
-
     data.slug = userSlug;
 
     await prisma.user.create({
@@ -52,22 +80,17 @@ export class PrismaUsersRepository implements IUserRepository {
         slug: userSlug,
       },
     });
-  }
 
-  async save(user: User): Promise<void> {
-    const data = await UserMapper.toPersistence(user);
+    if (this.TweetsRepositoy) {
+      this.TweetsRepositoy.save(user.Tweet)
+    }
 
-    const existingUser = await prisma.user.findUnique({
-      where: { id: data.id },
-    });
+    if (this.TweetsLikesRepository) {
+      this.TweetsLikesRepository.save(user.TweetLike)
+    }
 
-    await prisma.user.update({
-      where: {
-        id: data.id,
-      },
-      data: {
-        ...data,
-      },
-    });
+    if (this.tokensRepository) {
+      this.tokensRepository.save(user.Tokens)
+    }
   }
 }
