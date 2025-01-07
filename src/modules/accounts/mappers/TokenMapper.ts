@@ -21,7 +21,7 @@ export class TokenMapper {
       id: raw.id,
       expiresIn: raw.expiresIn,
       type: raw.type,
-      user_id: raw.user_id,
+      user_id: raw.userId,
       used: raw.used,
     };
   }

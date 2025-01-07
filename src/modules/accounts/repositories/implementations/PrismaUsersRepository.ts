@@ -35,6 +35,24 @@ export class PrismaUsersRepository implements IUserRepository {
     return !!query;
   }
 
+  async findOne(ident: string): Promise<User> {
+    const dbQuery = await prisma.user.findFirst({
+      where: {
+        OR: [{ email: ident }, { slug: ident }, { id: ident }],
+      },
+      include: {
+        tweets: true,
+        likes: true,
+      },
+    });
+
+    if (!dbQuery) {
+      return null;
+    }
+
+    return UserMapper.toDomain(dbQuery);
+  }
+
   async save(user: User): Promise<void> {
     const data = await UserMapper.toPersistence(user);
 

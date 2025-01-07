@@ -21,7 +21,7 @@ export class Token extends Entity<IToken> {
     return this.props.type
   }
 
-  get user_id() {
+  get userId() {
     return this.props.user_id
   }
 
@@ -36,7 +36,7 @@ export class Token extends Entity<IToken> {
   static create(props: IToken, id?: string): Token {
     const answer = new Token({
       ...props,
-      expiresIn: props.expiresIn ?? dayjs().add(10, 'minutes').unix(),
+      expiresIn: props.expiresIn ?? dayjs().add(10, 'minutes').unix()
     }, id)
     return answer
   }
