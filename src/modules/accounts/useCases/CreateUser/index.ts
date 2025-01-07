@@ -1,5 +1,5 @@
+import { MailProvider } from "infra/providers/mail/implementations/MailProvider";
 import { PrismaTokensRepository } from "modules/accounts/repositories/implementations/PrismaTokensRepository";
-import { MailProvider } from "../../../../infra/providers/implementations/MailProvider";
 import { PrismaUsersRepository } from "../../repositories/implementations/PrismaUsersRepository";
 import { CreateUser } from "./CreateUser";
 import { CreateUserController } from "./CreateUserController";

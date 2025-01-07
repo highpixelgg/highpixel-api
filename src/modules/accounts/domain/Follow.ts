@@ -1,8 +1,8 @@
 import { Entity } from "../../../core/domain/Entity";
 
 export interface IFollow {
-  user1Slug: string,
-  user2Slug: string,
+  userId1: string,
+  userId2: string,
 }
 
 export class Follow extends Entity<IFollow> {
@@ -10,12 +10,12 @@ export class Follow extends Entity<IFollow> {
     super(props, id)
   }
 
-  get user1Slug() {
-    return this.props.user1Slug
+  get userId1() {
+    return this.props.userId1
   }
 
-  get user2Slug() {
-    return this.props.user2Slug
+  get userId2() {
+    return this.props.userId2
   }
 
   public static create(props: IFollow, id?: string): Follow {

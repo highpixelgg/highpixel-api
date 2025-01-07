@@ -1,8 +1,10 @@
 import { Prisma } from "@prisma/client";
 import slug from "slug";
+import { getPublicURL } from "utils/getPublicURL";
 import { prisma } from "../../../../infra/prisma/prisma-client";
 import { User } from "../../domain/User";
 import { UserMapper } from "../../mappers/UserMapper";
+import { IFollowRepository } from "../IFollowRepository";
 import { ITokensRepository } from "../ITokensRepository";
 import { ITweetsLikesRepository } from "../ITweetsLikesRepository";
 import { ITweetsRepository } from "../ITweetsRepository";
@@ -12,7 +14,8 @@ export class PrismaUsersRepository implements IUserRepository {
   constructor(
     private TweetsRepositoy?: ITweetsRepository,
     private TweetsLikesRepository?: ITweetsLikesRepository,
-    private tokensRepository?: ITokensRepository,
+    private TokensRepository?: ITokensRepository,
+    private FollowsRepository?: IFollowRepository,
   ) { }
   async findUserByEmail(email: string): Promise<boolean> {
     const query = await prisma.user.findFirst({
@@ -47,6 +50,30 @@ export class PrismaUsersRepository implements IUserRepository {
         ...data,
       },
     });
+  }
+
+  async getUserSuggestions(userId: string): Promise<void> {
+    const following = await this.FollowsRepository.getUserFollowing(userId);
+    const followingPlusMe = [...following, userId];
+
+    type Suggestion = Pick<
+      Prisma.UserGetPayload<Prisma.UserDefaultArgs>,
+      "name" | "avatar" | "slug"
+    >;
+
+    const suggestions: Suggestion[] = await prisma.$queryRaw`
+        SELECT
+            name, avatar, slug
+        FROM "User"
+        WHERE
+            slug NOT IN (${followingPlusMe.join(',')})
+        ORDER BY RANDOM()
+        LIMIT 2;
+    `;
+
+    for (let sugIndex in suggestions) {
+      suggestions[sugIndex].avatar = getPublicURL(suggestions[sugIndex].avatar);
+    }
   }
 
   async update(userId: string, data: Prisma.UserUpdateInput): Promise<void> {
@@ -89,8 +116,8 @@ export class PrismaUsersRepository implements IUserRepository {
       this.TweetsLikesRepository.save(user.TweetLike)
     }
 
-    if (this.tokensRepository) {
-      this.tokensRepository.save(user.Tokens)
+    if (this.TokensRepository) {
+      this.TokensRepository.save(user.Tokens)
     }
   }
 }

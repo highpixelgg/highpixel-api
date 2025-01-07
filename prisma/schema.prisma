@@ -58,8 +58,8 @@ model TweetLike {
 
 model Follow {
   id        String    @id
-  user1Slug String
-  user2Slug String
+  userId1   String
+  userId2   String
 }
 
 model Trend {

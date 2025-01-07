@@ -1,7 +1,8 @@
 import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, left, right } from "core/logic/Either";
+import { IMailProvider } from "infra/providers/mail/models/IMailProvider";
+import { RegistrationEmailTemplate } from "infra/providers/mail/templates/RegistrationMailTemplate";
 import { Token } from "modules/accounts/domain/Token";
-import { IMailProvider } from "../../../../infra/providers/models/IMailProvider";
 import { User } from "../../domain/User";
 import { IUserRepository } from "../../repositories/IUserRepository";
 import { ICreateUserRequest } from "./CreateUserDTO";
@@ -62,7 +63,7 @@ export class CreateUser {
         email: `${process.env.EMAIL_USERNAME}`
       },
       subject: 'Ative sua conta',
-      body: `<h2>Olá ${user.name}!</h2> <p>Muito obrigado por se registrar no Low Racing! Clique no botão abaixo para verificar seu e-mail. Se você não solicitou este registro recomendamos que entre em contato conosco.</p><br><h4>${token.id}<br><br><h4>Tenha uma otima semana.</h4><br><h4>Feito com amor pela equipe Low Racing.</h4>`
+      body: RegistrationEmailTemplate(user.name, token.id)
     })
     return right(user)
   }

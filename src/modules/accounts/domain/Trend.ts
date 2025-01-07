@@ -32,7 +32,12 @@ export class Trend extends Entity<ITrend> {
     if (props.counter < 0) {
       left(new ParametersErrors("Invalid counter", 400))
     }
-    const trend = new Trend(props, id)
-    return right(trend)
+
+    const trend = new Trend({
+      ...props,
+      updatedAt: new Date(props.updatedAt),
+      hashtag: props.hashtag.trim(),
+    }, id)
+    return right(trend);
   }
 }
