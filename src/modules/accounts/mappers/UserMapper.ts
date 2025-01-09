@@ -1,77 +1,86 @@
-import { User as PersistenceUser } from "@prisma/client";
+import {
+  Notification as PersistenceNotification,
+  User as PersistenceUser,
+  Profile,
+} from "@prisma/client";
+import { Notifications } from "../domain/Notifications";
 import { User } from "../domain/User";
-import { ITweetsRepository } from "../repositories/ITweetsRepository";
-import { ITweetsLikesRepository } from "../repositories/ITweetsLikesRepository";
-import { ITokensRepository } from "../repositories/ITokensRepository";
-import { Tweet as PersistenceTweet, TweetLike as PersistenceTweetLike } from "@prisma/client";
-import { Tweets } from "../domain/Tweets";
-import { TweetMapper } from "./TweetMapper";
-import { TweetLike } from "../domain/TweetLike";
-import { TweetLikeMapper } from "./TweetLikeMapper";
-import { TweetsLikes } from "../domain/TweetsLikes";
+import { Email } from "../domain/email";
+import { Name } from "../domain/name";
+import { Password } from "../domain/password";
+import { NotificationMapper } from "./NotificationMapper";
 
 type PersistenteUserRaw = PersistenceUser & {
-  tweets?: PersistenceTweet[],
-  tweetLike?: PersistenceTweetLike[],
+  notifications?: PersistenceNotification[];
+  Profile: Profile;
 }
 
 export class UserMapper {
   static toDomain(raw: PersistenteUserRaw): User {
-    const tweetsOrError = raw.tweets
-    ? Tweets.create(  
-        raw.tweets.map(tweet =>
-          TweetMapper.toDomain(tweet)
+    const nameOrError = Name.create(raw.username);
+    const emailOrError = Email.create(raw.email);
+    const passwordOrError = Password.create(raw.password, true);
+
+    const notificationsErr = raw.notifications
+      ? Notifications.create(
+        raw.notifications.map(notifictation =>
+          NotificationMapper.toDomain(notifictation)
         )
       )
-    : Tweets.create([]);
+      : Notifications.create([]);
 
-    const tweetsLikesOrError = raw.tweetLike
-      ? TweetsLikes.create(
-          raw.tweetLike.map(tweetsLikes =>
-            TweetLikeMapper.toDomain(tweetsLikes)
-          )
-        )
-      : TweetsLikes.create([]);
+    if (nameOrError.isLeft()) {
+      throw new Error('Name value is invalid.');
+    }
 
+    if (emailOrError.isLeft()) {
+      throw new Error('Email value is invalid.');
+    }
+
+    if (passwordOrError.isLeft()) {
+      throw new Error('Password value is invalid.');
+    }
 
     const userOrError = User.create({
-      slug: raw.slug,
-      email: raw.email,
-      password: raw.password,
-      name: raw.name,
-      avatar: raw.avatar,
-      cover: raw.cover,
-      bio: raw.bio,
-      link: raw.link,
+      username: nameOrError.value,
+      email: emailOrError.value,
+      password: passwordOrError.value,
+      role: raw.role,
+      Profile: raw.Profile,
       isPremium: raw.isPremium,
       isVerified: raw.isVerified,
-      role: raw.role,
+      notifications: notificationsErr,
       createdAt: raw.createdAt,
-      Tweet: tweetsOrError,
-      TweetLike: tweetsLikesOrError,
     }, raw.id)
-    
-    if(userOrError.isRight()) {
+
+    if (userOrError.isRight()) {
       return userOrError.value
     }
 
     return null
   }
 
+  static toDto(raw: PersistenteUserRaw) {
+    return {
+      id: raw.id,
+      name: raw.username,
+      email: raw.email,
+      role: raw.role,
+      isPremium: raw.isPremium,
+      isVerified: raw.isVerified,
+      createdAt: raw.createdAt,
+    }
+  }
+
   static async toPersistence(user: User) {
     return {
       id: user.id,
-      slug: user.slug,
-      email: user.email,
-      password: user.password,
-      name: user.name,
-      avatar: user.avatar,
-      cover: user.cover,
-      bio: user.bio,
-      link: user.link,
+      name: user.username.value,
+      email: user.email.value,
+      password: await user.password.getHashedPassword(),
+      role: user.role,
       isPremium: user.isPremium,
       isVerified: user.isVerified,
-      role: user.role,
       createdAt: user.createdAt,
     }
   }

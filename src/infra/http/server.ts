@@ -1,6 +1,7 @@
-import { app } from "./app";
+import 'dotenv/config';
+import LowRacingAPI from './app';
+import log from 'vendor/log';
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running at the port: ${PORT}`);
-});
+LowRacingAPI.listen(process.env.PORT, () =>
+  log.success('LowRacingAPI: has been loaded')
+);

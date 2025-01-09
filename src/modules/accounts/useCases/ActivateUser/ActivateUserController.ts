@@ -1,17 +1,19 @@
-import { Request, Response } from 'express';
+import { Controller } from 'core/infra/Controller';
+import { clientError, HttpResponse, ok } from 'core/infra/HttpResponse';
 import { ActivateUser } from './ActivateUser';
+import { IActivateUserRequest } from './ActivationUserDTO';
 
-export class ActivateUserController {
+export class ActivateUserController implements Controller {
   constructor(private activateUser: ActivateUser) { }
 
-  async handle(req: Request, res: Response): Promise<Response> {
-    const { id } = req.body;
+  async handle({ id }: IActivateUserRequest): Promise<HttpResponse> {
     const result = await this.activateUser.execute({ id });
 
     if (result.isLeft()) {
-      return res.status(result.value.statusCode).json(result.value.message)
+      const error = result.value;
+      return clientError(error)
+    } else {
+      return ok(result.value)
     }
-
-    return res.status(200).json({ message: 'Account activated successfully' });
   }
 }

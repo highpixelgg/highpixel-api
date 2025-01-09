@@ -1,17 +1,20 @@
-import { Request, Response } from "express";
+import { Controller } from "core/infra/Controller";
+import { clientError, created, HttpResponse } from "core/infra/HttpResponse";
 import { CreateUser } from "./CreateUser";
+import { ICreateUserRequest } from "./CreateUserDTO";
 
-export class CreateUserController {
+export class CreateUserController implements Controller {
   constructor(private createUser: CreateUser) { }
 
-  async handle(req: Request, res: Response): Promise<Response> {
-    const { name, email, password } = req.body;
+  async handle({ name, email, password }: ICreateUserRequest): Promise<HttpResponse> {
     const result = await this.createUser.execute({ name, email, password })
 
-    if(result.isLeft()) {
-      return res.status(result.value.statusCode).json(result.value.message)
+    if (result.isLeft()) {
+      const error = result.value
+
+      return clientError(error)
+    } else {
+      return created();
     }
-    
-    return res.status(201).json({ message: 'Account created successfully' })
   }
 } 

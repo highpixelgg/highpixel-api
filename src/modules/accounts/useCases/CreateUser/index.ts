@@ -3,16 +3,14 @@ import { PrismaTokensRepository } from "modules/accounts/repositories/implementa
 import { PrismaUsersRepository } from "../../repositories/implementations/PrismaUsersRepository";
 import { CreateUser } from "./CreateUser";
 import { CreateUserController } from "./CreateUserController";
+import { Controller } from "core/infra/Controller";
 
-const makeCreateUserController = () => {
+export function makeCreateUserController(): Controller{
   const tokensRepository = new PrismaTokensRepository();
   const mailProvider = new MailProvider();
-  const prismaUsersRepository = new PrismaUsersRepository(null, null, tokensRepository);
+  const prismaUsersRepository = new PrismaUsersRepository(null, tokensRepository);
   const createUser = new CreateUser(prismaUsersRepository, mailProvider);
-  const createUserController = new CreateUserController(createUser)
+  const controller = new CreateUserController(createUser)
 
-  return createUserController.handle.bind(createUserController)
+  return controller
 }
-
-export { CreateUser, makeCreateUserController };
-

@@ -6,11 +6,11 @@ export class MailProvider implements IMailProvider {
   private transporter: Mail
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: Number(process.env.EMAIL_PORT),
+      host: process.env.MAILER_HOST,
+      port: Number(process.env.MAILER_PORT),
       auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
+        user: process.env.MAILER_USER,
+        pass: process.env.MAILER_PASSWORD,
       },
       tls: {
         rejectUnauthorized: false

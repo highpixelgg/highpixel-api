@@ -1,16 +1,18 @@
+import { Controller } from "core/infra/Controller";
+import { PrismaNotificationsRepository } from "modules/accounts/repositories/implementations/PrismaNotificationsRepository";
 import { PrismaTokensRepository } from "modules/accounts/repositories/implementations/PrismaTokensRepository";
 import { PrismaUsersRepository } from "../../repositories/implementations/PrismaUsersRepository";
 import { ActivateUser } from "./ActivateUser";
 import { ActivateUserController } from "./ActivateUserController";
 
-const makeActivateUserController = () => {
+export function makeActivateUserController(): Controller {
   const tokensRepository = new PrismaTokensRepository();
-  const userRepository = new PrismaUsersRepository(null, null, tokensRepository);
+  const notificationsRepository = new PrismaNotificationsRepository();
+  const userRepository = new PrismaUsersRepository(notificationsRepository, tokensRepository);
   const activateUser = new ActivateUser(userRepository, tokensRepository);
-  const activateUserController = new ActivateUserController(activateUser);
+  const controller = new ActivateUserController(activateUser);
 
-  return activateUserController.handle.bind(activateUserController)
+  return controller;
 }
 
-export { ActivateUser, makeActivateUserController };
 

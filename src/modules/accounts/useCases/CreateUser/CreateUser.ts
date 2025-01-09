@@ -2,69 +2,80 @@ import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, left, right } from "core/logic/Either";
 import { IMailProvider } from "infra/providers/mail/models/IMailProvider";
 import { RegistrationEmailTemplate } from "infra/providers/mail/templates/RegistrationMailTemplate";
+import { Email } from "modules/accounts/domain/email";
+import { Name } from "modules/accounts/domain/name";
+import { Password } from "modules/accounts/domain/password";
 import { Token } from "modules/accounts/domain/Token";
 import { User } from "../../domain/User";
 import { IUserRepository } from "../../repositories/IUserRepository";
 import { ICreateUserRequest } from "./CreateUserDTO";
 
-type CreateUserResponse = Either<ParametersErrors, ICreateUserRequest>
+type CreateUserResponse = Either<ParametersErrors, User>
 
 export class CreateUser {
   constructor(
     private usersRepository: IUserRepository,
-    private mailProvider: IMailProvider
+    private mailProvider: IMailProvider,
   ) { }
 
   async execute({ name, email, password }: ICreateUserRequest): Promise<CreateUserResponse> {
-    if (!name || name.trim().length < 2 || name.trim().length > 50) {
-      return left(new ParametersErrors('Invalid name.', 400))
+    const nameOrError = Name.create(name);
+    const emailOrError = Email.create(email);
+    const passwordOrError = Password.create(password);
+
+    if (nameOrError.isLeft()) {
+      return left(nameOrError.value);
     }
 
-    if (!email || email.trim().length > 255 || !email.trim().includes('@')) {
-      return left(new ParametersErrors('Invalid email.', 400))
+    if (emailOrError.isLeft()) {
+      return left(emailOrError.value);
     }
 
-    if (!password || password.trim().length < 6 || password.trim().length > 100) {
-      return left(new ParametersErrors('Invalid password.', 400))
+    if (passwordOrError.isLeft()) {
+      return left(passwordOrError.value);
     }
 
-    const emailExists = await this.usersRepository.findUserByEmail(email);
-    if (emailExists) {
-      return left(new ParametersErrors("Email already in use.", 409));
-    }
-
-    const userOrError = User.create({
-      name,
-      email,
-      password,
+    const accountOrErr = User.create({
+      username: nameOrError.value,
+      email: emailOrError.value,
+      password: passwordOrError.value,
     });
 
-    if (userOrError.isLeft()) {
-      return left(userOrError.value);
+    if (accountOrErr.isLeft()) {
+      return left(accountOrErr.value);
     }
 
-    const user = userOrError.value;
+    const account = accountOrErr.value;
 
+    const emailAleardyExists = await this.usersRepository.exists(account.email.value);
+
+    if (emailAleardyExists) {
+      return left(new ParametersErrors('Invalid email', 400));
+    }
+
+    // Here is called the email sending service,
+    // where the email will be sent to the user to confirm.
     const token = Token.create({
       type: 'activation',
-      user_id: user.id,
+      user_id: account.id,
       used: false,
     })
-    user.addToken(token)
+    account.addToken(token)
 
-    await this.usersRepository.create(user);
+    await this.usersRepository.create(account);
     await this.mailProvider.sendMail({
       to: {
-        name: user.name,
-        email: user.email,
+        name: account.username.value,
+        email: account.email.value,
       },
       from: {
         name: `${process.env.DISPLAY_NAME}`,
         email: `${process.env.EMAIL_USERNAME}`
       },
       subject: 'Ative sua conta',
-      body: RegistrationEmailTemplate(user.name, token.id)
+      body: RegistrationEmailTemplate(account.username.value, token.id)
     })
-    return right(user)
+
+    return right(account)
   }
 }

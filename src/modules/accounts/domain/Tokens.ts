@@ -1,7 +1,6 @@
 import { WatchedList } from "core/domain/WatchedList";
 import { Token } from "./Token";
 
-
 export class Tokens extends WatchedList<Token> {
   private constructor(token: Token[]) {
     super(token)

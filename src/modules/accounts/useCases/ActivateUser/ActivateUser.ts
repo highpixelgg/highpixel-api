@@ -1,4 +1,3 @@
-
 import { Either, left, right } from 'core/logic/Either';
 import dayjs from 'dayjs';
 import { ITokensRepository } from 'modules/accounts/repositories/ITokensRepository';
@@ -6,6 +5,7 @@ import { IUserRepository } from 'modules/accounts/repositories/IUserRepository';
 import { Token } from 'modules/accounts/domain/Token';
 import { ParametersErrors } from 'core/domain/errors/ParameterErrors';
 import { IActivateUserRequest } from './ActivationUserDTO';
+import { Notification } from 'modules/accounts/domain/Notification';
 
 type ActivateUserResponse = Either<ParametersErrors, Token>;
 
@@ -35,6 +35,17 @@ export class ActivateUser {
     }
 
     const account = await this.usersRepository.findOne(token.userId);
+
+    const notify = Notification.create({
+      read: false,
+      small:
+        'Hey ' +
+        account.username.value +
+        ', é ótimo ter você por aqui! Lembre-se que esta é uma versão Beta da plataforma. Se você estiver com alguma dúvida, ou encontrar algum erro, não hesite em entrar em contato com nosso time de suporte no Discord!',
+      userid: account.id,
+    });
+
+    account.addNotification(notify)
 
     // mark the request token to used
     // await this.usersRepository.markActivationTokenHasUsed(token)

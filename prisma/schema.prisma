@@ -20,53 +20,121 @@ enum Roles {
 
 model User {
   id       String      @id
-  name     String
-  slug     String      @unique
+  username     String? @unique
   email    String      @unique
   password String
-  bio      String?
-  link     String?
+  Profile Profile?
   role Roles @default(USER)
-  isVerified Boolean @default(false)
   isPremium Boolean @default(false)
+  isVerified Boolean @default(false)
+  createdAt DateTime @default(now())
+  notifications Notification[]
+  Tokens Tokens[] @relation("Tokens")
+
+  @@map("users")
+}
+
+model Profile {
+  id String @id @default(uuid())
+  nickname String
+  slug     String      @unique
   avatar   String      @default("default.jpg")
   cover    String      @default("default.jpg")
+  bio      String?
+  link     String?
+  userId String @unique
+  badges Badges[]
+  Posts Post[]
+  visitor Visitor[] @relation("visitor")
+  visitors Visitor[] @relation("visitors")
+  followers Follower[] @relation("followers")
+  following Follower[] @relation("following")
+  User User @relation(fields: [userId], references: [id])
+
+  @@map("profiles")
+}
+
+model Badges {
+  id String @id
+  name String
+  image String
+  user Profile @relation(fields: [userid], references: [userId])
+  userid String
   createdAt DateTime @default(now())
-  tweets   Tweet[] @relation("Tweet")
-  likes    TweetLike[] @relation("TweetLike")
-  Tokens Tokens[] @relation("Tokens")
+
+  @@map("badges")
 }
 
-model Tweet {
-  id        String         @id @default(uuid())
-  authorId  String
-  body      String
-  image     String?
-  createdAt DateTime    @default(now())
-  answerOf  Int         @default(0)
-  user      User        @relation("Tweet", fields: [authorId], references: [id])
-  likes     TweetLike[] @relation("TweetLike")
+model Notification {
+  id String @id @default(uuid())
+  read Boolean @default(false)
+  title String?
+  content String?
+  small String
+  user User @relation(fields: [userid], references: [id])
+  userid String
+  
+  @@map("notifications")
 }
 
-model TweetLike {
-  id       String    @id @default(uuid())
-  userId String
-  tweetId  String
-  user     User   @relation("TweetLike", fields: [userId], references: [id])
-  tweet    Tweet  @relation("TweetLike",fields: [tweetId], references: [id])
+model Post {
+  id String @id @default(uuid())
+  content String
+  asset String?
+  published Boolean @default(true)
+  author Profile @relation(fields: [authorId], references: [userId])
+  Likes Likes[] @relation("likes")
+  Comment Comment[] @relation("comments")
+  authorId String
+  createdAt DateTime @default(now())
 }
 
-model Follow {
-  id        String    @id
-  userId1   String
-  userId2   String
+model Likes {
+  id String @id @default(uuid())
+  postId String
+  authorId String
+  createdAt DateTime @default(now())
+  post Post @relation("likes", fields: [postId], references: [id])
 }
 
-model Trend {
+model Comment {
+  id String @id @default(uuid())
+  post Post @relation("comments", fields: [postId], references: [id])
+  postId String
+  authorId String
+  content String
+  asset String?
+  createdAt DateTime @default(now())
+}
+
+model Visitor {
+  id String @id
+  visitors Profile @relation("visitors", fields: [visitors_id], references: [userId])
+  visitors_id String
+  visitor_id String
+  visitor Profile @relation("visitor", fields: [visitor_id], references: [userId])
+  at DateTime @default(now())
+
+  @@map("visitors")
+}
+
+model Follower {
+  id String @id
+  followers Profile @relation("followers", fields: [followers_id], references: [userId])
+  followers_id String
+  following_id String
+  following Profile @relation("following", fields: [following_id], references: [userId])
+
+  @@map("followers")
+}
+
+model Trending {
   id        String      @id
   hashtag   String
   counter   Int      @default(1)
   updatedAt DateTime @default(now())
+
+  @@map("trendings")
 }
 
 model Tokens {
@@ -76,4 +144,6 @@ model Tokens {
   user_id   String
   user User @relation("Tokens", fields: [user_id], references: [id])
   expiresIn Int
+
+  @@map("tokens")
 }

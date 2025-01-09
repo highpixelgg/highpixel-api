@@ -1,26 +1,37 @@
 import cors from "cors";
-import { config } from 'dotenv';
-import express, { json } from "express";
-import routes from "./routes/index.js";
-config();
+import 'dotenv/config';
+import express from "express";
+import { createServer } from "http";
+import { Server, Socket } from "socket.io";
+import { Router } from "./routes/index";
 
-export const app = express();
+class LowRacingAPI {
+  public app: express.Application;
+  public io: Server;  
+  public server: any;
 
-const startup = async () => {
-  app.use(json());
-  app.use(cors());
-  app.use(routes());
-  app.use(
-    cors({
-      exposedHeaders: ['x-total-count', 'Content-Type', 'Content-Length'],
+  constructor() {
+    this.app = express();
+    this.server = createServer(this.app);
+    this.io = new Server(this.server, {
+      cors: {
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+      }
     })
-  )
+    this.middlewares();
+  }
 
-  app.use(
-    express.json({
-      type: ['application/json', 'text/plain'],
-    })
-  )
+  private middlewares(): void {
+    this.app.use(
+      cors({
+        exposedHeaders: ['x-total-count', 'Content-Type', 'Content-Length'],
+      })
+    );
+    this.app.use(express.urlencoded({ extended: false }));
+    this.app.use(express.json({ type: ['application/json', 'text/plain'] }));
+    this.app.use(Router)
+  }
 };
 
-startup();
+export default new LowRacingAPI().server;
