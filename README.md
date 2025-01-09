@@ -6,14 +6,14 @@
 Low Racing API is responsible for taking care of the entire Low Racing ecosystem.
 
 ## Pre-requisites 
-- Node.js => 20.16.0
+- Node.js => 20
 - Postgres
 - Docker
 
 ## Development
 Main IDE: [Visual Studio Code](https://code.visualstudio.com) <br>
 Engine: [Node](https://nodejs.org) <br>
-Database: [PostgreSQL](https://www.postgresql.org/)
+Database: [PostgreSQL](https://www.postgresql.org/) <br>
 ORM: [Prisma](https://www.prisma.io/)
 
 ## Running Project in development
