@@ -63,7 +63,7 @@ export class UserMapper {
   static toDto(raw: PersistenteUserRaw) {
     return {
       id: raw.id,
-      name: raw.username,
+      username: raw.username,
       email: raw.email,
       role: raw.role,
       isPremium: raw.isPremium,
@@ -75,7 +75,7 @@ export class UserMapper {
   static async toPersistence(user: User) {
     return {
       id: user.id,
-      name: user.username.value,
+      username: user.username.value,
       email: user.email.value,
       password: await user.password.getHashedPassword(),
       role: user.role,

@@ -9,7 +9,7 @@ export class MailProvider implements IMailProvider {
       host: process.env.MAILER_HOST,
       port: Number(process.env.MAILER_PORT),
       auth: {
-        user: process.env.MAILER_USER,
+        user: process.env.MAILER_USERNAME,
         pass: process.env.MAILER_PASSWORD,
       },
       tls: {

@@ -36,10 +36,10 @@ model User {
 
 model Profile {
   id String @id @default(uuid())
-  nickname String
-  slug     String      @unique
-  avatar   String      @default("default.jpg")
-  cover    String      @default("default.jpg")
+  nickname String?
+  slug     String?      @unique
+  avatar   String?      @default("https://google.com")
+  cover    String?      @default("https://google.com")
   bio      String?
   link     String?
   userId String @unique

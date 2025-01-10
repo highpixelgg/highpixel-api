@@ -11,19 +11,20 @@ export class PrismaUsersRepository implements IUserRepository {
     private tokensRepository?: ITokensRepository,
   ) { }
 
-  async exists(email: string): Promise<boolean> {
-    const query = await prisma.user.findFirst({
+  async exists(userOrEmail: string): Promise<boolean> {
+    const dbQuery = await prisma.user.findFirst({
       where: {
-        email
-      }
-    })
-    return !!query
+        OR: [{ email: userOrEmail }, { username: userOrEmail }],
+      },
+    });
+
+    return !!dbQuery;
   }
 
   async findOne(ident: string): Promise<User> {
-    const query = await prisma.user.findFirst({
+    const dbQuery = await prisma.user.findFirst({
       where: {
-        OR: [{ email: ident }, { id: ident }],
+        OR: [{ email: ident }, { username: ident }, { id: ident }],
       },
       include: {
         Profile: true,
@@ -31,11 +32,11 @@ export class PrismaUsersRepository implements IUserRepository {
       },
     });
 
-    if (!query) {
+    if (!dbQuery) {
       return null;
     }
 
-    return UserMapper.toDomain(query);
+    return UserMapper.toDomain(dbQuery);
   }
 
   async save(user: User): Promise<void> {
@@ -43,11 +44,11 @@ export class PrismaUsersRepository implements IUserRepository {
 
     await prisma.user.update({
       where: {
-        id: user.id,
+        id: data.id,
       },
       data: {
-        ...data
-      }
+        ...data,
+      },
     });
 
     if (this.notificationsRepository) {
@@ -55,20 +56,21 @@ export class PrismaUsersRepository implements IUserRepository {
     }
 
     if (this.tokensRepository) {
-      this.tokensRepository.save(user.Tokens);
+      this.tokensRepository.save(user.tokens);
     }
   }
 
   async create(user: User): Promise<void> {
     const data = await UserMapper.toPersistence(user);
+    const randomSuffixSlug = Math.floor(Math.random() * 999999).toString();
 
     await prisma.user.create({
       data: {
         ...data,
         Profile: {
           create: {
-            slug: data.name,
-            nickname: data.name,
+            nickname: data.username,
+            slug: `${data.username}-${randomSuffixSlug}`.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(" ", "-"),
             avatar: 'https://i.postimg.cc/4yNScCKL/defaultuser.jpg',
           }
         }
@@ -80,6 +82,7 @@ export class PrismaUsersRepository implements IUserRepository {
     }
 
     if (this.tokensRepository) {
-      this.tokensRepository.save(user.Tokens)
+      this.tokensRepository.save(user.tokens)
     }
-  }}
+  }
+}

@@ -37,16 +37,16 @@ export class SendRecoveryEmail {
         email: user.email.value,
       },
       from: {
-        name: `${process.env.DISPLAY_NAME}`,
-        email: `${process.env.EMAIL_USERNAME}`
+        name: `${process.env.MAILER_DISPLAY_NAME}`,
+        email: `${process.env.MAILER_USERNAME}`
       },
       subject: 'Ative sua conta',
       body: RecoveryEmailTemplate(user.username.value, token.id)
     })
 
     user.addToken(token);
+    
     await this.usersRepository.save(user);
-
     return right(token);
   }
 }

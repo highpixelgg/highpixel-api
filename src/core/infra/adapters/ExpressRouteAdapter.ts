@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
 import { Controller } from '@core/infra/Controller';
+import { NextFunction, Request, Response } from 'express';
 
 export const adaptRoute = (controller: Controller) => {
-  return async (request: Request, response: Response) => {
+  return async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const requestData = {
       ...request.body,
       ...request.params,
@@ -15,11 +15,9 @@ export const adaptRoute = (controller: Controller) => {
     const httpResponse = await controller.handle(requestData);
 
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
-      return response.status(httpResponse.statusCode).json(httpResponse);
+      response.status(httpResponse.statusCode).json(httpResponse);
     } else {
-      return response
-        .status(httpResponse.statusCode)
-        .json(httpResponse.body.error);
+      response.status(httpResponse.statusCode).json(httpResponse.body.error);
     }
   };
 };

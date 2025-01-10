@@ -6,7 +6,6 @@ import {
   User
 } from '@prisma/client';
 import { Profile } from '../domain/profile/Profile';
-import { Slug } from '../domain/profile/slug';
 
 export type PersistenceProfileRaw = ProfileRaw & {
   user?: User;
@@ -17,16 +16,10 @@ export type PersistenceProfileRaw = ProfileRaw & {
 
 export class ProfileMapper {
   static toDomain(raw: PersistenceProfileRaw): Profile {
-    const slugOrError = Slug.create(raw.slug);
-
-    if (slugOrError.isLeft()) {
-      throw new Error('slug value is invalid.');
-    }
-
     const profileOrError = Profile.create({
       User: raw.user,
       nickname: raw.nickname,
-      slug: slugOrError.value,
+      slug: raw.slug,
       avatar: raw.avatar,
       cover: raw.cover,
       bio: raw.bio,
@@ -46,7 +39,7 @@ export class ProfileMapper {
   static async toPersistence(profile: Profile) {
     return {
       nickname: profile.nickname,
-      slug: await profile.slug.getGenerateSlug(),
+      slug: profile.slug,
       avatar: profile.avatar,
       cover: profile.cover,
       bio: profile.bio,
@@ -54,4 +47,3 @@ export class ProfileMapper {
     }
   }
 }
-

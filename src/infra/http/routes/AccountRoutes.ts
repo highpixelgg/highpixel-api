@@ -14,7 +14,7 @@ Account.get('/register', (req, res) => {
 //   adaptRoute(makeAuthenticateController())
 // );
 
-// Account.post('/register', adaptRoute(makeCreateUserController()));
+Account.post('/register', adaptRoute(makeCreateUserController()));
 
 // Account.patch(
 //   '/activate/:id',

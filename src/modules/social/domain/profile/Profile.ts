@@ -1,16 +1,15 @@
+import { Badges, User } from "@prisma/client";
 import { Entity } from "core/domain/Entity";
 import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, right } from "core/logic/Either";
 import { Follow } from "./Follow";
 import { Follows } from "./Follows";
-import { Slug } from "./slug";
 import { Visitor } from "./Visitor";
 import { Visitors } from "./Visitors";
-import { User, Badges } from "@prisma/client";
 
 export interface IProfileProps {
   nickname: string,
-  slug: Slug,
+  slug: string,
   avatar: string,
   cover: string,
   bio: string,
@@ -89,8 +88,8 @@ export class Profile extends Entity<IProfileProps> {
     this.props.nickname = nickname
   }
 
-  public updateSlug(newSlug: Slug): void {
-    this.props.slug = newSlug;
+  public setSlug(slug: string): void {
+    this.props.slug = slug;
   }
 
   set setBio(bio: string) {

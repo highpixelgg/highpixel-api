@@ -20,7 +20,7 @@ export interface IUserProps {
   isVerified?: boolean,
   notifications?: Notifications;
   createdAt?: Date,
-  Tokens?: Tokens;
+  tokens?: Tokens;
 }
 
 export class User extends Entity<IUserProps> {
@@ -60,8 +60,8 @@ export class User extends Entity<IUserProps> {
     return this.props.notifications;
   }
 
-  get Tokens() {
-    return this.props.Tokens
+  get tokens() {
+    return this.props.tokens
   }
 
   get Profile() {
@@ -81,18 +81,18 @@ export class User extends Entity<IUserProps> {
   }
 
   public addToken(token: Token) {
-    this.Tokens.add(token)
+    this.tokens.add(token)
   }
 
   public removeToken(token: Token) {
-    this.Tokens.remove(token)
+    this.tokens.remove(token)
   }
 
   static create(props: IUserProps, id?: string): Either<ParametersErrors, User> {
     const user = new User({
       ...props,
       notifications: props.notifications ?? Notifications.create([]),
-      Tokens: props.Tokens ?? Tokens.create([]),
+      tokens: props.tokens ?? Tokens.create([]),
     }, id);
 
     return right(user)
