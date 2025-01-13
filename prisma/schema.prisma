@@ -19,104 +19,104 @@ enum Roles {
 }
 
 model User {
-  id       String      @id
-  username     String? @unique
-  email    String      @unique
-  password String
-  Profile Profile?
-  role Roles @default(USER)
-  isPremium Boolean @default(false)
-  isVerified Boolean @default(false)
-  createdAt DateTime @default(now())
+  id            String         @id
+  username      String?        @unique
+  email         String         @unique
+  password      String
+  Profile       Profile?
+  role          Roles          @default(USER)
+  isPremium     Boolean        @default(false)
+  isVerified    Boolean        @default(false)
+  createdAt     DateTime       @default(now())
   notifications Notification[]
-  Tokens Tokens[] @relation("Tokens")
+  Tokens        Tokens[]       @relation("Tokens")
 
   @@map("users")
 }
 
 model Profile {
-  id String @id @default(uuid())
-  nickname String?
-  slug     String?      @unique
-  avatar   String?      @default("https://google.com")
-  cover    String?      @default("https://google.com")
-  bio      String?
-  link     String?
-  userId String @unique
-  badges Badges[]
-  Posts Post[]
+  id        String     @id @default(uuid())
+  nickname  String?
+  slug      String?    @unique
+  avatar    String?
+  cover     String?
+  bio       String?
+  link      String?
+  userId    String     @unique
+  badges    Badges[]
+  Posts     Post[]
   followers Follower[] @relation("followers")
   following Follower[] @relation("following")
-  User User @relation(fields: [userId], references: [id])
+  User      User       @relation(fields: [userId], references: [id])
 
   @@map("profiles")
 }
 
 model Badges {
-  id String @id
-  name String
-  image String
-  user Profile @relation(fields: [userid], references: [userId])
-  userid String
+  id        String   @id
+  name      String
+  image     String
+  user      Profile  @relation(fields: [userid], references: [userId])
+  userid    String
   createdAt DateTime @default(now())
 
   @@map("badges")
 }
 
 model Notification {
-  id String @id @default(uuid())
-  read Boolean @default(false)
-  title String?
+  id      String  @id @default(uuid())
+  read    Boolean @default(false)
+  title   String?
   content String?
-  small String
-  user User @relation(fields: [userid], references: [id])
-  userid String
-  
+  small   String
+  user    User    @relation(fields: [userid], references: [id])
+  userid  String
+
   @@map("notifications")
 }
 
 model Post {
-  id String @id @default(uuid())
-  content String
-  asset String?
-  published Boolean @default(true)
-  author Profile @relation(fields: [authorId], references: [userId])
-  Likes Likes[] @relation("likes")
-  Comment Comment[] @relation("comments")
-  authorId String
-  createdAt DateTime @default(now())
+  id        String    @id @default(uuid())
+  content   String
+  asset     String?
+  published Boolean   @default(true)
+  author    Profile   @relation(fields: [authorId], references: [userId])
+  Likes     Likes[]   @relation("likes")
+  Comment   Comment[] @relation("comments")
+  authorId  String
+  createdAt DateTime  @default(now())
 }
 
 model Likes {
-  id String @id @default(uuid())
-  postId String
-  authorId String
+  id        String   @id @default(uuid())
+  postId    String
+  authorId  String
   createdAt DateTime @default(now())
-  post Post @relation("likes", fields: [postId], references: [id])
+  post      Post     @relation("likes", fields: [postId], references: [id])
 }
 
 model Comment {
-  id String @id @default(uuid())
-  post Post @relation("comments", fields: [postId], references: [id])
-  postId String
-  authorId String
-  content String
-  asset String?
+  id        String   @id @default(uuid())
+  post      Post     @relation("comments", fields: [postId], references: [id])
+  postId    String
+  authorId  String
+  content   String
+  asset     String?
   createdAt DateTime @default(now())
 }
 
 model Follower {
-  id String @id
-  followers Profile @relation("followers", fields: [followers_id], references: [userId])
+  id           String  @id
+  followers    Profile @relation("followers", fields: [followers_id], references: [userId])
   followers_id String
   following_id String
-  following Profile @relation("following", fields: [following_id], references: [userId])
+  following    Profile @relation("following", fields: [following_id], references: [userId])
 
   @@map("followers")
 }
 
 model Trending {
-  id        String      @id
+  id        String   @id
   hashtag   String
   counter   Int      @default(1)
   updatedAt DateTime @default(now())
@@ -125,11 +125,11 @@ model Trending {
 }
 
 model Tokens {
-  id        String @id @default(uuid())
+  id        String  @id @default(uuid())
   used      Boolean @default(false)
   type      String
   user_id   String
-  user User @relation("Tokens", fields: [user_id], references: [id])
+  user      User    @relation("Tokens", fields: [user_id], references: [id])
   expiresIn Int
 
   @@map("tokens")

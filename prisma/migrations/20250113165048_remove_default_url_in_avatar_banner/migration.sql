@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "profiles" ALTER COLUMN "avatar" DROP DEFAULT,
+ALTER COLUMN "cover" DROP DEFAULT;

@@ -1,3 +1,4 @@
+import { CloudinaryDeleteService } from "@infra/http/services/cloudinary/CloudinaryStorage";
 import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, left, right } from "core/logic/Either";
 import { IPostsRepository } from "modules/social/repositories/IPostsRepository";
@@ -30,6 +31,14 @@ export class DeletePost {
 
     post.Comments.getItems().map(comment => post.removeComment(comment));
     post.Likes.getItems().map(like => post.deslike(like));
+
+    if (post.asset) {
+      const deleteService = new CloudinaryDeleteService();
+      const publicId = post.asset.split('/').pop()?.split('.')[0];  // Extrai o public_id da URL
+      if (publicId) {
+        await deleteService.deletePost(publicId);
+      }
+    }
 
     await this.postsRepository.delete(post);
 

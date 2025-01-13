@@ -2,12 +2,12 @@ import cors from "cors";
 import 'dotenv/config';
 import express from "express";
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import { Router } from "./routes/index";
 
 class LowRacingAPI {
   public app: express.Application;
-  public io: Server;  
+  public io: Server;
   public server: any;
 
   constructor() {

@@ -1,8 +1,10 @@
 import imageDataUri from "image-data-uri";
 
-export const imageToDataURI = (image: Express.Multer.File): string => {
-  const dataBuffer = Buffer.from(image.buffer);
-  const mediaType = image.mimetype.replace("/image", "");
-  const imageData = imageDataUri.encode(dataBuffer, mediaType);
-  return imageData;
+export const mediaToDataURI = (media: Express.Multer.File): string => {
+  const dataBuffer = Buffer.from(media.buffer);
+  const mediaType = media.mimetype; 
+
+  const dataURI = imageDataUri.encode(dataBuffer, mediaType);
+
+  return dataURI;
 };

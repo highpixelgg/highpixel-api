@@ -1,5 +1,5 @@
 declare module "image-data-uri" {
-  function encode(data: Buffer, mediaType: string): string;
-  function decode(uri: string): Buffer;
+  export function encode(data: Buffer, mediaType: string): string;
+  export function decode(uri: string): { data: Buffer; mediaType: string };
   export = { encode, decode };
 }

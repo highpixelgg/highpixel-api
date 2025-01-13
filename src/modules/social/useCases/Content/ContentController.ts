@@ -7,7 +7,6 @@ type ContentRequest = {
   file: Express.Multer.File;
   avatar?: boolean;
   banner?: boolean;
-  post?: boolean;
   user: { id: string };
 };
 
