@@ -8,10 +8,7 @@ import { SubscribeFollowerUnsubscribe } from "./SubscribeFollowUnfollow";
 
 export function makeSubscribeFollowerController(): Controller {
   const followersRepository = new PrismaFollowsRepository();
-  const profileRepository = new PrismaProfilesRepository(
-    null,
-    followersRepository
-  );
+  const profileRepository = new PrismaProfilesRepository(followersRepository);
 
   const useCase = new SubscribeFollower(followersRepository, profileRepository);
   const useCaseFindAll = new SubscribeFollowerFindAll(

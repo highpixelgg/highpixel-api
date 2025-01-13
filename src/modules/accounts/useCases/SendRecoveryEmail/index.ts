@@ -9,7 +9,7 @@ export function makeSendRecoveryEmailController(): Controller {
   const tokensRepository = new PrismaTokensRepository();
   const mailProvider = new MailProvider();
   const userRepository = new PrismaUsersRepository(null, tokensRepository);
-  const useCase = new SendRecoveryEmail(userRepository, mailProvider);
+  const useCase = new SendRecoveryEmail(userRepository, mailProvider, tokensRepository);
   const controller = new SendRecoveryEmailController(useCase);
 
   return controller;

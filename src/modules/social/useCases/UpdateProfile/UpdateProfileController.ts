@@ -1,7 +1,15 @@
 import { Controller } from "core/infra/Controller";
 import { HttpResponse, forbidden, ok } from "core/infra/HttpResponse";
 import { UpdateProfile } from "./UpdateProfile";
-import { UpdateProfileRequest } from "./UpdateProfileDTO";
+
+type UpdateProfileRequest = {
+  user: { id: string };
+  nickname?: string;
+  slug?: string;
+  bio?: string;
+  link?: string;
+  action: string;
+};
 
 export class UpdateProfileController implements Controller {
   constructor(private updateProfile: UpdateProfile) { }

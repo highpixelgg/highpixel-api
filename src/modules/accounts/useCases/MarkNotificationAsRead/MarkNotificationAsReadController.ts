@@ -1,12 +1,15 @@
 import { Controller } from 'core/infra/Controller';
 import { clientError, HttpResponse, ok } from 'core/infra/HttpResponse';
 import { MarkNotificationAsRead } from './MarkNotificationAsRead';
-import { MarkNotificationAsReadRequest } from './MarkNotificationAsReadDTO';
+
+type MarkNotificationAsReadRequestController = {
+  id: string;
+};
 
 export class MarkNotificationAsReadController implements Controller {
   constructor(private markNotificationAsRead: MarkNotificationAsRead) { }
 
-  async handle({ id }: MarkNotificationAsReadRequest): Promise<HttpResponse> {
+  async handle({ id }: MarkNotificationAsReadRequestController): Promise<HttpResponse> {
     const result = await this.markNotificationAsRead.execute({ id });
 
     if (result.isLeft()) {

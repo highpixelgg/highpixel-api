@@ -25,6 +25,10 @@ export class CreateComment {
       return left(new ParametersErrors('Post not found.'));
     }
 
+    if(content.length < 1) {
+      return left(new ParametersErrors('Invalid post content length.'));
+    }
+
     const post = await this.postsRepository.findOne(postId);
 
     const createComment = Comment.create({

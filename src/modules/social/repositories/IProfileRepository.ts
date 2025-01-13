@@ -1,15 +1,15 @@
-import { Profile } from "../domain/profile/Profile";
+import { Profile } from '../domain/profile/Profile';
 
-export type SearchResponse = {
+export interface SearchResponse {
   data: Profile[];
   totalCount: number;
-};
+}
 
 export interface IProfilesRepository {
-  exists(slug: string): Promise<boolean>;
-  findOne(slug: string): Promise<Profile>;
+  exists(slugORId: string): Promise<boolean>;
+  findOne(slugORID: string): Promise<Profile>;
   findAll(): Promise<Profile[]>;
-  save(slug: Profile): Promise<void>;
+  save(profile: Profile): Promise<void>;
   search(
     query: string,
     page: number,

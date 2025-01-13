@@ -45,8 +45,8 @@ export class Post extends Entity<IPostProps> {
     return this.props.createdAt;
   }
 
-  set setAsset(url: string) {
-    this.props.asset = url
+  set asset(url: string) {
+    this.props.asset = url;
   }
   
   public like(like: Like) {

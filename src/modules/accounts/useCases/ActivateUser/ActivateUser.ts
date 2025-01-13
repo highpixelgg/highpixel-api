@@ -45,13 +45,13 @@ export class ActivateUser {
       userid: account.id,
     });
 
+    account.markAsVerified = true;
     account.addNotification(notify)
 
     // mark the request token to used
     // await this.usersRepository.markActivationTokenHasUsed(token)
 
     token.MarkHasUsed = true;
-
     await this.usersRepository.save(account);
     await this.tokenRepository.saveSingle(token);
 

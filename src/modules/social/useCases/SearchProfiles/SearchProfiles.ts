@@ -1,5 +1,5 @@
-import { Profile } from "modules/social/domain/profile/Profile";
-import { IProfilesRepository } from "modules/social/repositories/IProfileRepository";
+import { IProfilesRepository } from "@modules/social/repositories/IProfileRepository";
+import { Profile } from "@modules/social/domain/profile/Profile";
 
 type SearchProfilesRequest = {
   query?: string;

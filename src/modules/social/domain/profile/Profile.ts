@@ -4,8 +4,6 @@ import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, right } from "core/logic/Either";
 import { Follow } from "./Follow";
 import { Follows } from "./Follows";
-import { Visitor } from "./Visitor";
-import { Visitors } from "./Visitors";
 
 export interface IProfileProps {
   nickname: string,
@@ -15,7 +13,6 @@ export interface IProfileProps {
   bio: string,
   link: string,
   badges: Badges[];
-  visitors?: Visitors;
   follows?: Follows;
   followers?: Follows | object[];
   following: Follows | object[];
@@ -72,14 +69,6 @@ export class Profile extends Entity<IProfileProps> {
     return this.props.followers;
   }
 
-  get visitors() {
-    return this.props.visitors;
-  }
-
-  get user() {
-    return this.props.User;
-  }
-
   get User() {
     return this.props.User
   }
@@ -88,8 +77,8 @@ export class Profile extends Entity<IProfileProps> {
     this.props.nickname = nickname
   }
 
-  public setSlug(slug: string): void {
-    this.props.slug = slug;
+  set setSlug(slug: string) {
+    this.props.slug = slug
   }
 
   set setBio(bio: string) {
@@ -108,10 +97,6 @@ export class Profile extends Entity<IProfileProps> {
     this.props.cover = url
   }
 
-  public subscribeToVisitor(visitor: Visitor) {
-    this.visitors.add(visitor);
-  }
-
   public subscribeFollow(follow: Follow) {
     this.follows.add(follow);
   }
@@ -123,7 +108,6 @@ export class Profile extends Entity<IProfileProps> {
   static create(props: IProfileProps, id?: string): Either<ParametersErrors, Profile> {
     const profile = new Profile({
       ...props,
-      visitors: props.visitors ?? Visitors.create([]),
       follows: props.follows ?? Follows.create([]),
     }, id)
 

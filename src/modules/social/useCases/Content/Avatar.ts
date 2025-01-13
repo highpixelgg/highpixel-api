@@ -47,7 +47,6 @@ export class ContentAvatar {
 
     const profile = await this.profilesRepository.findOne(id);
 
-    // Delete the previous avatar, if any, using Cloudinary
     if (profile.avatar) {
       const public_id = profile.avatar.split('/').pop()?.split('.')[0];  // extract the public_id from URL
       if (public_id) {
@@ -56,9 +55,9 @@ export class ContentAvatar {
     }
 
     try {
-      const upload = await cloudinaryUpload(file, 'avatars');
+      await cloudinaryDelete(profile.avatar);
 
-      // Updates user avatar with new Cloudinary URL
+      const upload = await cloudinaryUpload(file, 'avatars');
       profile.setAvatarURL = upload.url;
       await this.profilesRepository.save(profile);
 

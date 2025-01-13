@@ -83,12 +83,6 @@ export class PrismaPostsRepository implements IPostsRepository {
       where: {},
     };
 
-    if (query) {
-      queryPayload.where = {
-        authorId: { contains: query, mode: 'insensitive' },
-      };
-    }
-
     const posts = await prisma.post.findMany({
       ...queryPayload,
       orderBy: {

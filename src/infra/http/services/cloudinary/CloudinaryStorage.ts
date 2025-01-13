@@ -1,27 +1,16 @@
+import { Storage } from '@infra/http/libs/cloudinary/storage';
 import { v2 as cloudinary } from 'cloudinary';
 import { imageToDataURI } from "infra/http/helpers/cloudinary-helper";
 
-// export const cloudinaryUpload = async (image: Express.Multer.File) => {
-//   const imageData = imageToDataURI(image);
+Storage();
 
-//   const uploadedResponse = await cloudinary.uploader.upload(imageData, {
-//     upload_preset: "lowracing",
-//     timeout: 30000, // 30s
-//   });
-
-//   return {
-//     public_id: uploadedResponse.public_id,
-//     url: uploadedResponse.secure_url,
-//   };
-// };
-
-export const cloudinaryUpload = async (image: Express.Multer.File, folder: string) => {
-  const imageData = imageToDataURI(image);
+export const cloudinaryUpload = async (asset: Express.Multer.File, folder: string) => {
+  const imageData = imageToDataURI(asset);
 
   const uploadedResponse = await cloudinary.uploader.upload(imageData, {
     upload_preset: "lowracing",
     timeout: 30000, // 30s
-    public_id: `${folder}/${image.originalname}`,
+    public_id: `${folder}/${asset.originalname}`,
   });
 
   return {
@@ -30,6 +19,11 @@ export const cloudinaryUpload = async (image: Express.Multer.File, folder: strin
   };
 };
 
-export const cloudinaryDelete = async (public_id: string) => {
-  await cloudinary.uploader.destroy(public_id);
+export const cloudinaryDelete = async (assetUrl: string) => {
+  const splitPublicId = assetUrl.split('/avatars/').pop();
+  console.log(splitPublicId);
+  const getPublicId = splitPublicId[1].split('.')[0];
+  console.log(getPublicId)
+  const deleteImage = await cloudinary.uploader.destroy(getPublicId);  
+  console.log(deleteImage);
 };

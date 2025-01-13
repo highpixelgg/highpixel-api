@@ -16,14 +16,9 @@ export class GetProfile {
     }
 
     const profile = await this.profilesRepository.findOne(ident);
-
-    const requestUser = await this.profilesRepository.findOne(user.id);
-
+    const requestUser = await this.profilesRepository.findOne(profile.userId);
     const userfollows = requestUser.following as object[];
-
-    const isFollowing = userfollows.find(
-      (follow: any) => follow.followers_id === profile.User.id
-    );
+    const isFollowing = userfollows.find((follow: any) => follow.followers_id === profile.userId);
 
     const {
       slug,
@@ -36,9 +31,6 @@ export class GetProfile {
       following,
       followers,
     } = profile;
-
-    delete User.password;
-    delete User.email;
 
     return right({
       ...User,

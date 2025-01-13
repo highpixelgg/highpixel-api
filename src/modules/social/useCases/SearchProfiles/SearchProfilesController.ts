@@ -26,26 +26,7 @@ export class SearchProfilesController implements Controller {
         perPage: per_page ? Number(per_page) : undefined,
       });
 
-      const profiles = data.map(profile => {
-        return {
-          id: profile.id,
-          username: profile.User.username,
-          userid: profile.User.id,
-          createdAt: profile.User.createdAt,
-          role: profile.User.role,
-          isPremium: profile.User.isPremium,
-          isVerified: profile.User.isVerified,
-          avatar: profile.avatar,
-          cover: profile.cover,
-          bio: profile.bio,
-          link: profile.link,
-          nickname: profile.nickname,
-          badges: profile.badges,
-          slug: profile.slug,
-        };
-      });
-
-      return ok({ data: profiles, totalCount });
+      return ok({ data: data, totalCount });
     } catch (err) {
       return fail(err);
     }

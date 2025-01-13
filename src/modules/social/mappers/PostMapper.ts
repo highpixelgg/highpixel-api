@@ -12,7 +12,6 @@ import { LikeMapper } from './LikeMapper';
 type PersistenceLikeRaw = {
   id: string;
   content: string;
-  asset: string;
   Likes: PesistenceLikes[];
   Comment: PersistenceComments[];
   published: boolean;
@@ -31,7 +30,6 @@ export class PostMapper {
       {
         authorId: raw.authorId,
         content: raw.content,
-        asset: raw.asset,
         published: raw.published,
         Likes: Likes.create(likeMapper),
         createdAt: raw.createdAt,
@@ -51,7 +49,6 @@ export class PostMapper {
     return {
       authorId: raw.authorId,
       content: raw.content,
-      asset: raw.asset,
       createdAt: raw.createdAt,
       published: raw.published,
     };

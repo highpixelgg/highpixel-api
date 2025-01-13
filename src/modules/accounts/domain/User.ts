@@ -68,6 +68,10 @@ export class User extends Entity<IUserProps> {
     return this.props.Profile 
   }
 
+  set markAsVerified(verified: boolean) {
+    this.props.isVerified = true
+  }
+
   set setPassword(password: Password) {
     this.props.password = password;
   }

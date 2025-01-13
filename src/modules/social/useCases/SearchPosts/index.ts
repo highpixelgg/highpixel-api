@@ -1,8 +1,8 @@
 import { Controller } from "core/infra/Controller";
 import { PrismaPostsRepository } from "modules/social/repositories/implementations/PrismaPostsRepository";
 import { PrismaProfilesRepository } from "modules/social/repositories/implementations/PrismaProfilesRepository";
+import { SearchPosts } from "./SearchPosts";
 import { SearchPostsController } from "./SearchPostsController";
-import { SearchPosts } from "./SearhPosts";
 
 export function makeSearchPostsController(): Controller {
   const repository = new PrismaPostsRepository();

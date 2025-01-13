@@ -9,7 +9,11 @@ type AuthenticateUserRequest = {
 export class AuthenticateUserController implements Controller {
   constructor(private authenticateUser: AuthenticateUser) { }
 
-  async handle({ authorization }): Promise<HttpResponse> {
+  async handle({ authorization }: AuthenticateUserRequest): Promise<HttpResponse> {
+    if (!authorization) {
+      return clientError(new Error('Authorization is required'))
+    }
+
     const result = await this.authenticateUser.execute({
       buffer: authorization,
     });

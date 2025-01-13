@@ -36,7 +36,7 @@ export class SubscribeFollower {
     const alreadySubscribetToVisitor =
       await this.followersRepository.findByProfileParams({
         followers_id,
-        following_id: user.id,
+        following_id: user.id, 
       });
 
     if (alreadySubscribetToVisitor) {

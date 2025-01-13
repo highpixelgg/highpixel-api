@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Middleware } from '../Middleware';
 
 export const adaptMiddleware = (middleware: Middleware) => {
-  return async (request: Request, response: Response, next: NextFunction) => {
+  return async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const requestData = {
       accessToken: request.headers?.['x-access-token'],
       user: request.user,
@@ -23,18 +23,17 @@ export const adaptMiddleware = (middleware: Middleware) => {
      */
 
     if (httpResponse === false) {
-      return response.status(200).send();
+      response.status(200).send();
+      return;
     }
 
     if (httpResponse.statusCode === 200) {
       Object.assign(request, httpResponse.body);
-
-      return next();
+      next();
     } else {
-      return response.status(httpResponse.statusCode).json({
+      response.status(httpResponse.statusCode).json({
         status: httpResponse.statusCode,
         error: httpResponse.body.error,
       });
     }
-  };
-};
+  };};

@@ -45,8 +45,6 @@ model Profile {
   userId String @unique
   badges Badges[]
   Posts Post[]
-  visitor Visitor[] @relation("visitor")
-  visitors Visitor[] @relation("visitors")
   followers Follower[] @relation("followers")
   following Follower[] @relation("following")
   User User @relation(fields: [userId], references: [id])
@@ -105,17 +103,6 @@ model Comment {
   content String
   asset String?
   createdAt DateTime @default(now())
-}
-
-model Visitor {
-  id String @id
-  visitors Profile @relation("visitors", fields: [visitors_id], references: [userId])
-  visitors_id String
-  visitor_id String
-  visitor Profile @relation("visitor", fields: [visitor_id], references: [userId])
-  at DateTime @default(now())
-
-  @@map("visitors")
 }
 
 model Follower {

@@ -1,6 +1,13 @@
 import { Controller } from "core/infra/Controller";
 import { HttpResponse, clientError, ok } from "core/infra/HttpResponse";
-import { SearchPosts } from "./SearhPosts";
+import { SearchPosts } from "./SearchPosts";
+
+type SearchPostsControllerRequest = {
+  user: { id: string };
+  query?: string;
+  page?: string;
+  per_page?: string;
+};
 
 export class SearchPostsController implements Controller {
   constructor(private searchPosts: SearchPosts) { }
@@ -9,13 +16,13 @@ export class SearchPostsController implements Controller {
     user,
     query,
     page,
-    perPage,
-  }: ISearchPostsRequest): Promise<HttpResponse> {
+    per_page,
+  }: SearchPostsControllerRequest): Promise<HttpResponse> {
     const result = await this.searchPosts.execute({
       user,
       query,
       page: page ? Number(page) : undefined,
-      perPage: page ? Number(perPage) : undefined,
+      perPage: page ? Number(per_page) : undefined,
     });
 
     if (result.isLeft()) {

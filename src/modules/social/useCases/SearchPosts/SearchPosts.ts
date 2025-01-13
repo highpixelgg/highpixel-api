@@ -5,6 +5,13 @@ import { LikeMapper } from "modules/social/mappers/LikeMapper";
 import { IPostsRepository } from "modules/social/repositories/IPostsRepository";
 import { IProfilesRepository } from "modules/social/repositories/IProfileRepository";
 
+type SearchPostsRequest = {
+  user: { id: string };
+  query?: string;
+  page?: number;
+  perPage?: number;
+};
+
 type SearchPostsResponse = {
   data: Object[];
   totalCount: number;
@@ -16,18 +23,18 @@ export class SearchPosts {
   constructor(
     private postsRepository: IPostsRepository,
     private profilesRepository: IProfilesRepository
-  ) { }
+  ) {}
 
   async execute({
     query,
     user,
     page = 1,
     perPage = 19700,
-  }: ISearchPostsRequest): Promise<PromiseSearchResponse> {
+  }: SearchPostsRequest): Promise<PromiseSearchResponse> {
     const exists = await this.profilesRepository.exists(user.id);
 
     if (!exists) {
-      return left(new ParametersErrors("User not found"));
+      return left(new ParametersErrors('User not found'));
     }
 
     const { data, totalCount } = await this.postsRepository.search(

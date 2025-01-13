@@ -1,13 +1,11 @@
-import { prisma } from 'infra/prisma/prisma-client';
-import { Profile } from 'modules/social/domain/profile/Profile';
-import { ProfileMapper } from 'modules/social/mappers/ProfileMapper';
+import { prisma } from '@infra/prisma/prisma-client';
+import { Profile } from '@modules/social/domain/profile/Profile';
+import { ProfileMapper } from '@modules/social/mappers/ProfileMapper';
 import { IFollowsRepository } from '../IFollowsRepository';
-import { IProfilesRepository, SearchResponse } from '../IProfileRepository';
-import { IVisitorRepository } from '../IVisitorRepository';
+import { IProfilesRepository, SearchResponse } from '../IProfileRepository'; // Fixed import
 
 export class PrismaProfilesRepository implements IProfilesRepository {
   constructor(
-    private visitorsRepository?: IVisitorRepository,
     private followsRepository?: IFollowsRepository
   ) { }
 
@@ -51,20 +49,17 @@ export class PrismaProfilesRepository implements IProfilesRepository {
   }
 
   async save(profile: Profile): Promise<void> {
-    const data = await ProfileMapper.toPersistence(profile);
+    const data = ProfileMapper.toPersistence(profile);
 
     await prisma.profile.update({
       where: {
-        userId: profile.User.id,
-      }, data
+        userId: profile.userId,
+      },
+      data,
     });
 
     if (this.followsRepository) {
-      this.followsRepository.save(profile.follows);
-    }
-
-    if (this.visitorsRepository) {
-      this.visitorsRepository.save(profile.visitors);
+      await this.followsRepository.save(profile.follows);
     }
   }
 
@@ -88,7 +83,7 @@ export class PrismaProfilesRepository implements IProfilesRepository {
       queryPayload.where = {
         OR: [
           {
-            user: {
+            User: {
               username: {
                 contains: query,
                 mode: 'insensitive',
@@ -103,7 +98,7 @@ export class PrismaProfilesRepository implements IProfilesRepository {
       queryPayload.orderBy = { id: 'asc' };
     } else {
       queryPayload.orderBy = {
-        user: {
+        User: {
           username: 'asc',
         },
       };
@@ -113,8 +108,7 @@ export class PrismaProfilesRepository implements IProfilesRepository {
       ...queryPayload,
       include: {
         badges: true,
-        medals: true,
-        user: true,
+        User: true,
         following: true,
         followers: true,
       },

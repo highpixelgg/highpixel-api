@@ -1,4 +1,4 @@
 export const auth = {
-  secretKey: process.env.SECRET_KEY,
+  secretKey: process.env.JWT_SECRET,
   expiresIn: '7d',
 };
