@@ -87,6 +87,7 @@ Social.post(
       max: 3,
     })
   ),
+  upload.single("asset"),
   adaptRoute(makeCreatePostController())
 );
 

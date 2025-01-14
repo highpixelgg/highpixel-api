@@ -49,6 +49,7 @@ export const uploadConfig = {
         'image/gif': 'gif',
         'audio/ogg': 'ogg',
         'audio/mp3': 'mp3',
+        'audio/mpeg': 'mpeg',
         'video/mp4': 'mp4',
         'video/avi': 'avi',
         'video/mkv': 'mkv',
@@ -68,6 +69,7 @@ export const uploadConfig = {
         'image/gif': 10485760, // 10MB
         'audio/ogg': 15728640, // 15MB
         'audio/mp3': 15728640, // 15MB
+        'audio/mpeg': 15728640, // 15MB
         'video/mp4': 52428800, // 50MB
         'video/avi': 52428800, // 50MB
         'video/mkv': 52428800, // 50MB

@@ -1,6 +1,6 @@
+import { prisma } from 'infra/prisma/prisma-client';
 import { Post } from "modules/social/domain/timeline/Post";
 import { PostMapper } from "modules/social/mappers/PostMapper";
-import { prisma } from 'infra/prisma/prisma-client';
 import ICommentsRepository from "../ICommentsRepository";
 import ILikesRepository from "../ILikesRepository";
 import { IPostsRepository, SearchResponse } from "../IPostsRepository";

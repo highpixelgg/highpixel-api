@@ -5,18 +5,17 @@ import { CreatePost } from "./CreatePost";
 type CreatePostControllerRequest = {
   user: { id: string };
   content: string;
+  file?: Express.Multer.File;
 };
 
 export class CreatePostController implements Controller {
   constructor(private createUser: CreatePost) { }
 
-  async handle({
-    user,
-    content,
-  }: CreatePostControllerRequest): Promise<HttpResponse> {
+  async handle({ user, content, file }: CreatePostControllerRequest): Promise<HttpResponse> {
     const result = await this.createUser.execute({
       authorId: user.id,
       content,
+      file,
     });
 
     if (result.isLeft()) {

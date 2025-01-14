@@ -4,7 +4,7 @@ export function getMimeTypeAndExtensionFromBase64(
   b64: string,
   contentType: keyof typeof uploadConfig
 ) {
-  const matches = b64.match(/^data:([A-Za-z]+\/[A-Za-z]+);base64,/);
+  const matches = b64.match(/^data:([A-Za-z]+\/[A-Za-z0-9\-.+]+);base64,/);
 
   if (matches && matches.length === 2) {
     const mimeType = matches[1];
@@ -16,6 +16,14 @@ export function getMimeTypeAndExtensionFromBase64(
       fileExtension = mimeTypes[mimeType];
     }
 
+    if (!uploadConfig[contentType]) {
+      return {
+        mimeType: null,
+        extension: null,
+        error: `Invalid content type: ${contentType}`,
+      };
+    }
+    
     if (fileExtension) {
       return {
         mimeType: mimeType,
@@ -35,4 +43,4 @@ export function getMimeTypeAndExtensionFromBase64(
     extension: null,
     error: "Invalid base64 format or MIME type.",
   };
-}
+}  

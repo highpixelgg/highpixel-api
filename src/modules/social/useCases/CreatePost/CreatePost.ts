@@ -1,7 +1,6 @@
 import { uploadConfig } from "@config/upload-config";
 import { CloudinaryUploadService } from "@infra/http/services/cloudinary/CloudinaryStorage";
 import { IUserRepository } from "@modules/accounts/repositories/IUserRepository";
-import { getMimeTypeAndExtensionFromBase64 } from "@utils/getMimeType";
 import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, left, right } from "core/logic/Either";
 import { Content } from "modules/social/domain/timeline/Content";
@@ -10,8 +9,12 @@ import { IPostsRepository } from "modules/social/repositories/IPostsRepository";
 
 type CreatePostRequest = {
   content: string;
+  file?: Express.Multer.File;
   authorId: string;
-  asset?: Express.Multer.File;
+};
+
+type FileResponse = {
+  file: string;
 };
 
 type CreatePostResponse = Either<ParametersErrors, Post>;
@@ -24,17 +27,14 @@ export class CreatePost {
 
   async execute({
     content,
+    file,
     authorId,
-    asset,
   }: CreatePostRequest): Promise<CreatePostResponse> {
     const uploadService = new CloudinaryUploadService();
+
     const contentOrError = Content.create(content);
 
     if (contentOrError.isLeft()) {
-      return left(new ParametersErrors('Invalid post content length.'));
-    }
-
-    if (content.length < 1) {
       return left(new ParametersErrors('Invalid post content length.'));
     }
 
@@ -43,60 +43,55 @@ export class CreatePost {
       return left(new ParametersErrors('User not found'));
     }
 
-    // verify if file is a base64
-    const base64 = `data:${asset.mimetype};base64,${asset.buffer.toString("base64")}`;
-    const fileInfo = getMimeTypeAndExtensionFromBase64(base64, "post");
+    const base64 = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+    const isValidBase64 = base64.startsWith(`data:${file.mimetype};base64,`);
 
-    if (fileInfo.error) {
-      return left(new ParametersErrors(fileInfo.error));
+    if (!isValidBase64) {
+      throw new Error("Formato base64 inválido ou tipo MIME não suportado.");
     }
 
-    // Check limits based on user type
-    const limits = user.isPremium
+
+    const userMimeTypes = user.isPremium
+      ? uploadConfig.post.mimeTypes.premium
+      : uploadConfig.post.mimeTypes.default;
+
+    const userLimits = user.isPremium
       ? uploadConfig.post.limits.premium
       : uploadConfig.post.limits.default;
 
-    const fileLimit = limits[asset.mimetype];
-
-    // Check if the file type is allowed
-    const mimeTypesConfig = user.isPremium ? uploadConfig.post.mimeTypes.premium : uploadConfig.post.mimeTypes.default;
-    const allowedExtensions = Object.keys(mimeTypesConfig);
-
-    if (!allowedExtensions.includes(asset.mimetype)) {
-      return left(
-        new ParametersErrors(
-          `Invalid file type. Allowed types: ${allowedExtensions.join(", ")}.`
-        )
-      );
+    // Verifique se o tipo de arquivo é permitido
+    if (!userMimeTypes[file.mimetype]) {
+      throw new Error(`Tipo de arquivo não permitido: ${file.mimetype}`);
     }
 
-    // Check if the file size exceeds the limit
-    if (asset.size > fileLimit) {
-      return left(
-        new ParametersErrors(
-          `File size exceeds the limit for ${asset.mimetype}.`
-        )
-      );
+    // Verifique se o tamanho do arquivo está dentro do limite permitido
+    const maxSize = userLimits[file.mimetype];
+    if (!maxSize || file.size > maxSize) {
+      throw new Error(`Arquivo excede o limite permitido (${maxSize / (1024 * 1024)} MB).`);
     }
+
 
     try {
-      const upload = await uploadService.uploadPost(asset);
+      const upload = await uploadService.uploadPost(file)
 
-      const post = Post.create({
-        authorId,
-        content,
+      const postOrError = Post.create({
+        authorId: user.id,
+        content: contentOrError.value.value,
         asset: upload.url,
       });
 
-      if (post.isLeft()) {
-        return left(post.value);
+      if (postOrError.isLeft()) {
+        return left(postOrError.value);
       }
 
-      const newPost = post.value;
-      await this.postsRepository.create(newPost);
+      const post = postOrError.value;
+      post.setAsset = upload.url;
 
-      return right(newPost);
+      await this.postsRepository.create(post);
+
+      return right(post);
     } catch (error) {
+      console.log(error);
       return left(new ParametersErrors('Error creating post'));
     }
   }

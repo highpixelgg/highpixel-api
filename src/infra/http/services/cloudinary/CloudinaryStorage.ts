@@ -24,6 +24,7 @@ class CloudinaryUploadService {
 
     const uploadedResponse = await cloudinary.uploader.upload(imageData, {
       upload_preset: config.preset,
+      resource_type: "auto",
       timeout: 30000, // 30s
       public_id: asset.originalname.split('.')[0],
     });

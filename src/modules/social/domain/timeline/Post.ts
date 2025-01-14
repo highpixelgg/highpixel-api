@@ -17,6 +17,10 @@ interface IPostProps {
 }
 
 export class Post extends Entity<IPostProps> {
+  private constructor(props: IPostProps, id?: string) {
+    super(props, id);
+  }
+
   get content() {
     return this.props.content;
   }
@@ -45,7 +49,7 @@ export class Post extends Entity<IPostProps> {
     return this.props.createdAt;
   }
 
-  set asset(url: string) {
+  set setAsset(url: string) {
     this.props.asset = url;
   }
   
@@ -65,10 +69,6 @@ export class Post extends Entity<IPostProps> {
     this.Comments.remove(comment);
   }
 
-  private constructor(props: IPostProps, id?: string) {
-    super(props, id);
-  }
-
   static create(
     props: IPostProps,
     id?: string
@@ -79,8 +79,7 @@ export class Post extends Entity<IPostProps> {
         published: props.published ?? true,
         Likes: props.Likes ?? Likes.create([]),
         Comments: props.Comments ?? Comments.create([]),
-      },
-      id
+      }, id
     );
 
     return right(post);

@@ -17,6 +17,7 @@ export class DeletePost {
     user,
     postId,
   }: DeletePostRequest): Promise<DeletePostResponse> {
+    const deleteService = new CloudinaryDeleteService();
     const exists = await this.postsRepository.exists(postId);
 
     if (!exists) {
@@ -33,10 +34,9 @@ export class DeletePost {
     post.Likes.getItems().map(like => post.deslike(like));
 
     if (post.asset) {
-      const deleteService = new CloudinaryDeleteService();
-      const publicId = post.asset.split('/').pop()?.split('.')[0];  // Extrai o public_id da URL
-      if (publicId) {
-        await deleteService.deletePost(publicId);
+      const public_id = post.asset.split('/').pop()?.split('.')[0];  // Extrai o public_id da URL
+      if (public_id) {
+        await deleteService.deletePost(public_id);
       }
     }
 
