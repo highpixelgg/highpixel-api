@@ -1,6 +1,7 @@
 import { Trending } from "../domain/timeline/Trending"
 
 export interface ITrendRepository {
-  getTrending(): Promise<Trending[]>
+  getTrending(): Promise<Trending>
   create(hashtag: string): Promise<void>
+  save(trending: Trending): Promise<void>
 }

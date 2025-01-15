@@ -30,6 +30,7 @@ model User {
   createdAt     DateTime       @default(now())
   notifications Notification[]
   Tokens        Tokens[]       @relation("Tokens")
+  Player        Player?        @relation("Player")
 
   @@map("users")
 }
@@ -133,4 +134,47 @@ model Tokens {
   expiresIn Int
 
   @@map("tokens")
+}
+
+model Update {
+  id         String   @id @unique @default(uuid())
+  product    String
+  version    String
+  download   String
+  release    DateTime @default(now())
+  changelogs String
+
+  @@map("updates")
+}
+
+model Player {
+  id       String          @id @unique @default(uuid())
+  nickname String          @unique
+  money    Decimal
+  user     User            @relation("Player", fields: [nickname], references: [username])
+  vehicles PlayerVehicle[]
+
+  @@map("players")
+}
+
+model Vehicle {
+  id            String          @id @default(uuid())
+  name          String
+  type          String
+  price         Decimal
+  createdAt     DateTime        @default(now())
+  PlayerVehicle PlayerVehicle[]
+
+  @@map("game_vehicles")
+}
+
+model PlayerVehicle {
+  id          String   @id @default(uuid())
+  playerId    String
+  vehicleId   String
+  purchasedIn DateTime @default(now())
+  player      Player   @relation(fields: [playerId], references: [id])
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+
+  @@map("player_vehicles")
 }

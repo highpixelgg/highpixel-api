@@ -1,7 +1,6 @@
 import { Trending as PersistenceTrend } from "@prisma/client";
 import { Trending } from "../domain/timeline/Trending";
 
-
 export class TrendsMapper {
   static toDomain(raw: PersistenceTrend): Trending {
     const trend = Trending.create(

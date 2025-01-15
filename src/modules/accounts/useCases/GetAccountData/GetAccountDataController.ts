@@ -25,6 +25,7 @@ export class GetAccountDataController implements Controller {
           .getItems()
           .map(notify => NotificationMapper.toPersistence(notify)),
         ...Parse.Profile,
+        ...Parse.Player,
       });
     }
   }

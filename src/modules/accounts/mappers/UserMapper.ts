@@ -1,6 +1,7 @@
 import {
   Notification as PersistenceNotification,
   User as PersistenceUser,
+  Player,
   Profile,
 } from "@prisma/client";
 import { Notifications } from "../domain/Notifications";
@@ -13,6 +14,7 @@ import { NotificationMapper } from "./NotificationMapper";
 type PersistenteUserRaw = PersistenceUser & {
   notifications?: PersistenceNotification[];
   Profile: Profile;
+  Player: Player;
 }
 
 export class UserMapper {
@@ -47,6 +49,7 @@ export class UserMapper {
       password: passwordOrError.value,
       role: raw.role,
       Profile: raw.Profile,
+      Player: raw.Player,
       isPremium: raw.isPremium,
       isVerified: raw.isVerified,
       notifications: notificationsErr,

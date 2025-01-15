@@ -1,4 +1,4 @@
-import { Profile, Roles } from "@prisma/client";
+import { Player, Profile, Roles } from "@prisma/client";
 import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, right } from "core/logic/Either";
 import { Entity } from "../../../core/domain/Entity";
@@ -16,6 +16,7 @@ export interface IUserProps {
   password: Password,
   role?: Roles,
   Profile?: Profile,
+  Player?: Player,
   isPremium?: boolean,
   isVerified?: boolean,
   notifications?: Notifications;
@@ -65,7 +66,11 @@ export class User extends Entity<IUserProps> {
   }
 
   get Profile() {
-    return this.props.Profile 
+    return this.props.Profile
+  }
+
+  get Player() {
+    return this.props.Player
   }
 
   set markAsVerified(verified: boolean) {

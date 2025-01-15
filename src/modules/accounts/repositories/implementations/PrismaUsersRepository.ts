@@ -28,6 +28,7 @@ export class PrismaUsersRepository implements IUserRepository {
       },
       include: {
         Profile: true,
+        Player: true,
         notifications: true,
       },
     });
@@ -71,7 +72,14 @@ export class PrismaUsersRepository implements IUserRepository {
           create: {
             nickname: data.username,
             slug: `${data.username}-${randomSuffixSlug}`.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(" ", "-"),
-            avatar: 'https://i.postimg.cc/4yNScCKL/defaultuser.jpg',
+          }
+        },
+        Player: {
+          create: {
+            money: 0,
+            vehicles: {
+              create: []
+            },
           }
         }
       }
