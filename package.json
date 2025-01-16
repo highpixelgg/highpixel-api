@@ -10,6 +10,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/infra/http/server.ts",
+    "start": "node dist/infra/http/server.js",
     "build": "npx tsc --project tsconfig.json && npx tscpaths -p tsconfig.json -s ./src -o ./dist"
   },
   "devDependencies": {
@@ -61,6 +62,10 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.19.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "vercel": "^39.3.0"
+  },
+  "engines": {
+    "node": "20"
   }
 }
