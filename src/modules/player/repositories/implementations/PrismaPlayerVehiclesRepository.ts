@@ -1,4 +1,5 @@
 import { prisma } from "@infra/prisma/prisma-client";
+import { NotificationMapper } from "@modules/accounts/mappers/NotificationMapper";
 import { PlayerVehicle } from "@modules/player/domain/PlayerVehicle";
 import { PlayerVehicles } from "@modules/player/domain/PlayerVehicles";
 import { PlayerVehiclesMapper } from "@modules/player/mappers/PlayerVehicleMapper";
@@ -69,7 +70,7 @@ export class PrismaPlayerVehiclesRepository implements IPlayerVehiclesRepository
         .getRemovedItems()
         .map(vehicle => vehicle.id);
 
-      await prisma.playerVehicle.deleteMany({
+      await prisma.vehicle.deleteMany({
         where: {
           id: {
             in: removeIds,
@@ -78,4 +79,15 @@ export class PrismaPlayerVehiclesRepository implements IPlayerVehiclesRepository
       });
     }
   }
+
+  async saveSingle(vehicles: PlayerVehicle): Promise<void> {
+      const data = PlayerVehiclesMapper.toPersistence(vehicles);
+  
+      await prisma.notification.update({
+        where: {
+          id: data.id,
+        },
+        data,
+      });
+    }
 }

@@ -4,7 +4,7 @@ import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, left, right } from "core/logic/Either";
 import { IUserRepository } from "modules/accounts/repositories/IUserRepository";
 
-type DeleteVehicleRequest = {
+type GetVehicleDataRequest = {
   vehicleId: string;
   authorId: string,
 };
@@ -17,7 +17,7 @@ export class GetVehicleData {
     private userRepository: IUserRepository,
   ) { }
 
-  async execute({ vehicleId, authorId }: DeleteVehicleRequest): Promise<GetVehicleDataResponse> {
+  async execute({ vehicleId, authorId }: GetVehicleDataRequest): Promise<GetVehicleDataResponse> {
     const userExist = await this.userRepository.findOne(authorId);
 
     if (userExist.role !== "ADMIN") {

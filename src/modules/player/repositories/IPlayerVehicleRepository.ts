@@ -6,6 +6,7 @@ export interface IPlayerVehiclesRepository {
   create(vehicle: PlayerVehicles): Promise<void>;
   delete(raw: PlayerVehicle): Promise<void>;
   save(vehicles: PlayerVehicles): Promise<void>;
+  saveSingle(vehicles: PlayerVehicle): Promise<void>;
   findByVehicleId(vehicleId: string): Promise<PlayerVehicle>;
   findAll(): Promise<PlayerVehicle[]>;
 }

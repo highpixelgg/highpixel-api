@@ -1,26 +1,23 @@
-import { PlayerVehicle } from "@modules/player/domain/PlayerVehicle";
+import { Player } from "@modules/player/domain/Player";
 import { IPlayerRepository } from "@modules/player/repositories/IPlayerRepository";
-import { IPlayerVehiclesRepository } from "@modules/player/repositories/IPlayerVehicleRepository";
 import { ParametersErrors } from "core/domain/errors/ParameterErrors";
 import { Either, left, right } from "core/logic/Either";
 import { IUserRepository } from "modules/accounts/repositories/IUserRepository";
 
-type AddVehiclePlayerRequest = {
+type GetPlayerDataRequest = {
   nickname: string;
-  vehicleId: string;
   authorId: string,
 };
 
-type AddVehiclePlayerResponse = Either<ParametersErrors, PlayerVehicle>;
+type GetPlayerDataResponse = Either<ParametersErrors, Player>;
 
-export class AddVehiclePlayer {
+export class GetPlayerData {
   constructor(
     private playerRepository: IPlayerRepository,
     private userRepository: IUserRepository,
-    private playerVehiclesRepository: IPlayerVehiclesRepository,
   ) { }
 
-  async execute({ nickname, vehicleId, authorId }: AddVehiclePlayerRequest): Promise<AddVehiclePlayerResponse> {
+  async execute({ nickname, authorId }: GetPlayerDataRequest): Promise<GetPlayerDataResponse> {
     const userExist = await this.userRepository.findOne(authorId);
 
     if (userExist.role !== "ADMIN") {
@@ -36,19 +33,6 @@ export class AddVehiclePlayer {
       return left(new ParametersErrors('Player not found.'))
     }
 
-    if (!vehicleId) {
-      return left(new ParametersErrors('Vehicle invalid.'))
-    }
-
-    const vehicle = PlayerVehicle.create({
-      playerId: player.id,
-      vehicleId,
-      purchasedIn: new Date(),
-    })
-    
-    player.addVehicle(vehicle)
-    await this.playerRepository.save(player)
-
-    return right(vehicle)
+    return right(player)
   }
 }

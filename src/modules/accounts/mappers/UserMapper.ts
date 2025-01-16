@@ -21,7 +21,7 @@ export class UserMapper {
   static toDomain(raw: PersistenteUserRaw): User {
     const nameOrError = Name.create(raw.username);
     const emailOrError = Email.create(raw.email);
-    const passwordOrError = Password.create(raw.password, true);
+    const passwordOrError = Password.create(raw.password, true);  
 
     const notificationsErr = raw.notifications
       ? Notifications.create(

@@ -1,14 +1,14 @@
 import { PrismaPlayerRepository } from "@modules/player/repositories/implementations/PrismaPlayerRepository";
 import { Controller } from "core/infra/Controller";
 import { PrismaUsersRepository } from "modules/accounts/repositories/implementations/PrismaUsersRepository";
-import { UpdatePlayerMoney } from "./UpdatePlayerMoney";
-import { UpdatePlayerMoneyController } from "./UpdatePlayerMoneyController";
+import { GetPlayerData } from "./GetPlayerData";
+import { GetPlayerDataController } from "./GetPlayerDataController";
 
-export function makeUpdatePlayerMoneyController(): Controller {
+export function makeGetPlayerDataController(): Controller {
   const playerRepository = new PrismaPlayerRepository();
   const userRepository = new PrismaUsersRepository();
-  const useCase = new UpdatePlayerMoney(playerRepository, userRepository);
-  const controller = new UpdatePlayerMoneyController(useCase);
+  const useCase = new GetPlayerData(playerRepository, userRepository);
+  const controller = new GetPlayerDataController(useCase);
 
   return controller;
 }

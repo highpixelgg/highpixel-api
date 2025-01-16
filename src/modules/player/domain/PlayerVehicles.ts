@@ -6,7 +6,7 @@ export class PlayerVehicles extends WatchedList<PlayerVehicle> {
     super(vehicle)
   }
 
-  compareItems(a: PlayerVehicle, b: PlayerVehicle): boolean {
+  public compareItems(a: PlayerVehicle, b: PlayerVehicle): boolean {
     return a.equals(b)
   }
 

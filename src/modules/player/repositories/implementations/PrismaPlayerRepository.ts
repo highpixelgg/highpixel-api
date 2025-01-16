@@ -1,5 +1,4 @@
 import { prisma } from "@infra/prisma/prisma-client";
-import { IVehiclesRepository } from "@modules/game/repositories/IVehicleRepository";
 import { Player } from "@modules/player/domain/Player";
 import { PlayerMapper } from "@modules/player/mappers/PlayerMapper";
 import { IPlayerRepository } from "../IPlayerRepository";

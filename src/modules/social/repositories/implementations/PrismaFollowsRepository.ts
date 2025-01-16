@@ -28,7 +28,7 @@ export class PrismaFollowsRepository implements IFollowsRepository {
   async findAllByProfileParams(params: FindByProfileParams): Promise<Follow[]> {
     const dbQuery = await prisma.follower.findMany({
       where: { followers_id: params.followers_id },
-      take: 50,
+      take: 20,
       include: {
         following: true,
       },

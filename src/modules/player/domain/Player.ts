@@ -8,8 +8,8 @@ import { PlayerVehicle } from "./PlayerVehicle"
 export interface IPlayerProps {
   nickname: string,
   money: number,
-  vehicles: PlayerVehicles,
-  user: User,
+  vehicles?: PlayerVehicles,
+  user?: User,
 }
 
 export class Player extends Entity<IPlayerProps> {
@@ -37,7 +37,7 @@ export class Player extends Entity<IPlayerProps> {
     this.props.nickname = nickname;
   }
 
-  set setMoney(money: number) {
+  public setMoney(money: number) {
     this.props.money = money;
   }
 

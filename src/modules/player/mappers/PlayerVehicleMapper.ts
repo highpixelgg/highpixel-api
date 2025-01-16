@@ -8,12 +8,6 @@ type PlayerVehiclePersistenteRaw = PersistentePlayerVehicleRaw & {
   vehicles?: PersistenceVehicle[];
 }
 
-type topPeristenceRaw = {
-  vehicleId: string;
-  playerId: string;
-  purchasedIn: Date;
-}
-
 export class PlayerVehiclesMapper {
   static toDomain(raw: PlayerVehiclePersistenteRaw): PlayerVehicle {
     const vehiclesErr = raw.vehicles
@@ -24,7 +18,7 @@ export class PlayerVehiclesMapper {
       )
       : Vehicles.create([]);
 
-    const PlayerVehiclesOrError = PlayerVehicle.create({
+    const vehiclePlayer = PlayerVehicle.create({
       player: raw.player,
       playerId: raw.playerId,
       vehicle: vehiclesErr,
@@ -32,15 +26,12 @@ export class PlayerVehiclesMapper {
       purchasedIn: raw.purchasedIn,
     }, raw.id)
 
-    if (PlayerVehiclesOrError.isRight()) {
-      return PlayerVehiclesOrError.value;
-    }
-
-    return null
+    return vehiclePlayer
   }
 
-  static toPersistence(raw: topPeristenceRaw) {
+  static toPersistence(raw: PlayerVehicle) {
     return {
+      id: raw.id,
       playerId: raw.playerId,
       vehicleId: raw.vehicleId,
       purchaseIn: raw.purchasedIn,

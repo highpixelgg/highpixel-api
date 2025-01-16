@@ -5,12 +5,7 @@ import { PlayerVehiclesMapper } from "./PlayerVehicleMapper";
 
 type PlayerPersistenteRaw = PersistentePlayerRaw & {
   user?: User;
-  vehicles: PersistentePlayerVehicleRaw[];
-}
-
-type topPeristenceRaw = {
-  nickname: string;
-  money: number;
+  vehicles?: PersistentePlayerVehicleRaw[];
 }
 
 export class PlayerMapper {
@@ -37,8 +32,9 @@ export class PlayerMapper {
     return null
   }
 
-  static toPersistence(raw: topPeristenceRaw) {
+  static toPersistence(raw: Player) {
     return {
+      id: raw.id,
       nickname: raw.nickname,
       money: raw.money,
     };

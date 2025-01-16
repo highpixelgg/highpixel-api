@@ -6,9 +6,9 @@ import { Vehicles } from "@modules/game/domain/Vehicles";
 import { Player } from "@prisma/client";
 
 export interface IPlayerVehicleProps {
-  player: Player;
+  player?: Player;
   playerId: string;
-  vehicle: Vehicles;
+  vehicle?: Vehicles;
   vehicleId: string;
   purchasedIn: Date;
 }
@@ -38,7 +38,7 @@ export class PlayerVehicle extends Entity<IPlayerVehicleProps> {
     return this.props.purchasedIn;
   }
 
-  set setPlayer(player: Player) {
+  public setPlayer(player: Player) {
     this.props.player = player;
   }
 
@@ -54,7 +54,7 @@ export class PlayerVehicle extends Entity<IPlayerVehicleProps> {
     this.props.purchasedIn = purchasedIn;
   }
 
-  static create(props: IPlayerVehicleProps, id?: string): Either<ParametersErrors, PlayerVehicle> {
-    return right(new PlayerVehicle(props, id));
+  static create(props: IPlayerVehicleProps, id?: string): PlayerVehicle{
+    return new PlayerVehicle(props, id);
   }
 }
