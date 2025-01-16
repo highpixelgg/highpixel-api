@@ -10,9 +10,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/infra/http/server.ts",
-    "test": "jest",
-    "prepare": "husky install",
-    "build": "npm i && tsup src --outDir dist"
+    "build": "npx tsc --project tsconfig.json && npx tscpaths -p tsconfig.json -s ./src -o ./dist"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",

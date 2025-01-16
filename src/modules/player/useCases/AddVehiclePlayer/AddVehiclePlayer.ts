@@ -17,7 +17,6 @@ export class AddVehiclePlayer {
   constructor(
     private playerRepository: IPlayerRepository,
     private userRepository: IUserRepository,
-    private playerVehiclesRepository: IPlayerVehiclesRepository,
   ) { }
 
   async execute({ nickname, vehicleId, authorId }: AddVehiclePlayerRequest): Promise<AddVehiclePlayerResponse> {
