@@ -6,6 +6,7 @@ import { makeRateLimitMiddleware } from '../middlewares/makeRateLimitMiddleware'
 import { makeActivateUserController } from '@modules/accounts/useCases/ActivateUser';
 import { makeAuthenticateController } from '@modules/accounts/useCases/AuthenticateUser';
 import { makeGetAccountDataController } from '@modules/accounts/useCases/GetAccountData';
+import { makeGetAllUsersController } from '@modules/accounts/useCases/GetAllUsersData';
 import { makeNotificationController } from '@modules/accounts/useCases/MarkNotificationAsRead';
 import { makeRecoveryPasswordController } from '@modules/accounts/useCases/RecoveryUser';
 import { makeSendRecoveryEmailController } from '@modules/accounts/useCases/SendRecoveryEmail';
@@ -13,8 +14,8 @@ import { makeCreateUserController } from 'modules/accounts/useCases/CreateUser';
 import { makeAuthenticationMiddleware } from '../middlewares/makeAuthenticationMiddleware';
 
 const Account = express.Router();
-
 Account.post('/register', adaptRoute(makeCreateUserController()));
+Account.get('/users', adaptRoute(makeGetAllUsersController()));
 
 Account.patch(
   '/activate/:id',
