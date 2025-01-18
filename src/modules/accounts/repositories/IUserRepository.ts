@@ -5,4 +5,5 @@ export interface IUserRepository {
   findOne(ident: string): Promise<User>;
   save(user: User): Promise<void>;
   create(user: User): Promise<void>;
+  findAll(): Promise<User[]>;
 }

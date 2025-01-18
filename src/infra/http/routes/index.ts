@@ -15,5 +15,4 @@ Router.get('*', (req: Request, res: Response) => {
   res.status(404).send("<img src='https://media.tenor.com/XWr6vfqH7WEAAAAC/tentando-n%C3%A3o-rir-risada.gif'/> <br><br> Nada que você já não tenha visto, apenas um servidor web.");
 });
 
-
 export { Router };
