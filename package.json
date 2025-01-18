@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Low Racing API is responsible for taking care of the entire Low Racing ecosystem",
   "main": "src/infra/http/server.ts",
-  "repository": "https://github.com/lowracing/thunder",
+  "repository": "https://github.com/JulioDeveloper/lowracing-api",
   "keywords": [],
   "author": "Júlio Developer",
   "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "tsx watch src/infra/http/server.ts",
-    "start": "node dist/infra/http/server.js",
+    "start": "node -r tsconfig-paths/register dist/infra/http/server.js",
     "build": "npx tsc --project tsconfig.json && npx tscpaths -p tsconfig.json -s ./src -o ./dist"
   },
   "devDependencies": {
@@ -34,8 +34,11 @@
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.3",
-    "ts-node-dev": "^2.0.0"
+    "typescript-eslint": "^8.19.0",
+    "typescript": "^5.7.3",
+    "ts-node-dev": "^2.0.0",
+    "ts-node": "^10.9.2",
+    "husky": "^8.0.3"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -56,12 +59,9 @@
     "prisma": "^6.2.1",
     "slug": "^10.0.0",
     "socket.io": "^4.8.1",
-    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.2.2",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.19.0",
     "uuid": "^9.0.1",
     "vercel": "^39.3.0"
   },

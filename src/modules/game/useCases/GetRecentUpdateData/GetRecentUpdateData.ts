@@ -19,9 +19,9 @@ export class GetRecentUpdateData {
   async execute({ authorId }: RecentUpdateRequest): Promise<GetUpdateDataResponse> {
     const userExist = await this.userRepository.findOne(authorId);
 
-    if (userExist.role !== "ADMIN") {
-      return left(new ParametersErrors('Access denied.'))
-    }
+    // if (userExist.role !== "ADMIN") {
+    //   return left(new ParametersErrors('Access denied.'))
+    // }
 
     const update = await this.updatesRepository.findRecentUpdate();
 

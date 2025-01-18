@@ -147,6 +147,16 @@ model Update {
   @@map("updates")
 }
 
+model Headlines {
+  id          String   @id @unique @default(uuid())
+  title       String
+  description String
+  img         String
+  createAt    DateTime @default(now())
+
+  @@map("headlines")
+}
+
 model Player {
   id       String          @id @unique @default(uuid())
   nickname String          @unique

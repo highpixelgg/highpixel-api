@@ -1,15 +1,21 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "./dist/infra/http/server.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
+      "source": "/v1/accounts/:path*",
+      "destination": "/api/v1/accounts/:path*"
+    },
     {
-      "src": "/(.*)",
-      "dest": "./dist/infra/http/server.js"
+      "source": "/v1/social/:path*",
+      "destination": "/api/v1/social/:path*"
+    },
+    {
+      "source": "/v1/game/:path*",
+      "destination": "/api/v1/game/:path*"
+    },
+    {
+      "source": "/v1/player/:path*",
+      "destination": "/api/v1/player/:path*"
     }
   ]
 }

@@ -23,9 +23,9 @@ export class GetAllVehicleData {
       return left(new ParametersErrors('User not found.'))
     }
 
-    if (userExist.role !== "ADMIN") {
-      return left(new ParametersErrors('Access denied.'))
-    }
+    // if (userExist.role !== "ADMIN") {
+    //   return left(new ParametersErrors('Access denied.'))
+    // }
 
     const vehicles = await this.vehiclesRepository.findAll();
 

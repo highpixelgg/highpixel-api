@@ -20,9 +20,9 @@ export class GetVehicleData {
   async execute({ vehicleId, authorId }: GetVehicleDataRequest): Promise<GetVehicleDataResponse> {
     const userExist = await this.userRepository.findOne(authorId);
 
-    if (userExist.role !== "ADMIN") {
-      return left(new ParametersErrors('Access denied.'))
-    }
+    // if (userExist.role !== "ADMIN") {
+    //   return left(new ParametersErrors('Access denied.'))
+    // }
 
     if (!vehicleId) {
       return left(new ParametersErrors('Vehicle not found.'))
