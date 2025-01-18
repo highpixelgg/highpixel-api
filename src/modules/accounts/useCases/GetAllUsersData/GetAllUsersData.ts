@@ -3,10 +3,6 @@ import { Either, right } from "@core/logic/Either";
 import { User } from "@modules/accounts/domain/User";
 import { IUserRepository } from "@modules/accounts/repositories/IUserRepository";
 
-type GetAllUsersRequest = {
-  authorId: string,
-};
-
 type GetAllUsersResponse = Either<ParametersErrors, User[]>
 
 export class GetAllUsersData {
@@ -14,9 +10,7 @@ export class GetAllUsersData {
     private userRepository: IUserRepository,
   ) { }
 
-  async execute({ authorId }: GetAllUsersRequest): Promise<GetAllUsersResponse> {
-    const userExist = await this.userRepository.findOne(authorId);
-
+  async execute(): Promise<GetAllUsersResponse> {
     // if (!userExist) {
     //   return left(new ParametersErrors('User not found.'))
     // }
