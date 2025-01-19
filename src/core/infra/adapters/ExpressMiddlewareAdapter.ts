@@ -4,7 +4,7 @@ import { Middleware } from '../Middleware';
 export const adaptMiddleware = (middleware: Middleware) => {
   return async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const requestData = {
-      accessToken: request.headers?.['x-access-token'],
+      accessToken: request.headers?.['x_access_token'],
       user: request.user,
       ...(request.headers || {}),
     };

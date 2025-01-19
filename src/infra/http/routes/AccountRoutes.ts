@@ -15,7 +15,6 @@ import { makeAuthenticationMiddleware } from '../middlewares/makeAuthenticationM
 
 const Account = express.Router();
 Account.post('/register', adaptRoute(makeCreateUserController()));
-Account.get('/users', adaptRoute(makeGetAllUsersController()));
 
 Account.patch(
   '/activate/:id',
@@ -72,5 +71,9 @@ Account.patch(
   adaptMiddleware(makeAuthenticationMiddleware()),
   adaptRoute(makeNotificationController())
 );
+
+Account.get('/users', adaptRoute(makeGetAllUsersController()));
+
+Account.get('/get-account/:id', adaptRoute(makeGetAccountDataController()));
 
 export { Account };

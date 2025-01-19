@@ -12,9 +12,15 @@ export class GetAllUsersController implements Controller {
       const error = result.value;
       return clientError(error);
     } else {
-      return ok({
-        ...result.value,
-      });
+      const users = result.value.map(user => ({
+        _id: user.id,
+        username: user.props.username.value,
+        email: user.props.email.value,
+        role: user.props.role,
+        isPremium: user.props.isPremium
+      }));
+
+      return ok(users);
     }
   }
 } 

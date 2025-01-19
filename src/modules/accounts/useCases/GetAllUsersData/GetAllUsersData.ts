@@ -11,10 +11,6 @@ export class GetAllUsersData {
   ) { }
 
   async execute(): Promise<GetAllUsersResponse> {
-    // if (!userExist) {
-    //   return left(new ParametersErrors('User not found.'))
-    // }
-
     const users = await this.userRepository.findAll();
 
     return right(users)

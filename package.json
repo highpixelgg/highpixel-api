@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "tsx watch src/infra/http/server.ts",
     "start": "node -r tsconfig-paths/register dist/infra/http/server.js",
-    "build": "npx tsc --project tsconfig.json && npx tscpaths -p tsconfig.json -s ./src -o ./dist"
+    "build": "npx prisma db push && npx tsc --project tsconfig.json && npx tscpaths -p tsconfig.json -s ./src -o ./dist"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",

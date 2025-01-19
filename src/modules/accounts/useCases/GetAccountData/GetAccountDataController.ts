@@ -1,13 +1,14 @@
 import { Controller } from "core/infra/Controller";
-import { HttpResponse, ok, fail } from "core/infra/HttpResponse";
+import { fail, HttpResponse, ok } from "core/infra/HttpResponse";
 import { NotificationMapper } from "modules/accounts/mappers/NotificationMapper";
 import { GetAccountData } from "./GetAccountData";
+import { IGetAccountDataRequest } from "./GetAccountDataDTO";
 
 export class GetAccountDataController implements Controller {
   constructor(private getAccountData: GetAccountData) { }
 
-  async handle({ user }): Promise<HttpResponse> {
-    const result = await this.getAccountData.execute({ user });
+  async handle({ id }: IGetAccountDataRequest): Promise<HttpResponse> {
+    const result = await this.getAccountData.execute({ id });
 
     if (result.isLeft()) {
       const error = result.value;
@@ -16,7 +17,7 @@ export class GetAccountDataController implements Controller {
       const Parse = result.value;
 
       return ok({
-        _id: Parse.id,
+        id: Parse.id,
         name: Parse.username.value,
         email: Parse.email.value,
         isPremium: Parse.isPremium,
