@@ -9,8 +9,8 @@ type GetAccountDataResponse = Either<ParametersErrors, User>;
 export class GetAccountData {
   constructor(private usersRepository: IUserRepository) { }
 
-  async execute({ id }: IGetAccountDataRequest): Promise<GetAccountDataResponse> {
-    const account = await this.usersRepository.findOne(id);
+  async execute({ ident }: IGetAccountDataRequest): Promise<GetAccountDataResponse> {
+    const account = await this.usersRepository.findOne(ident);
 
     if (!account) {
       return left(new ParametersErrors('User not exists', 404));

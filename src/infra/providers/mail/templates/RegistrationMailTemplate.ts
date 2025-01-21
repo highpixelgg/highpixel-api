@@ -379,9 +379,9 @@ export const RegistrationEmailTemplate = (name: string, token: string) => `
                                     <tr>
                                       <td>
                                         <a
-                                          href="https://www.lowracing.com/register/confirm/${token}"
+                                          href="https://www.lowracing.com/active-account/${token}"
                                           target="_blank"
-                                          >Verificar meu email</a
+                                          >Ativar minha conta</a
                                         >
                                       </td>
                                     </tr>

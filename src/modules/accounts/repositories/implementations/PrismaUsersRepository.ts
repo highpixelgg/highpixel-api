@@ -24,12 +24,11 @@ export class PrismaUsersRepository implements IUserRepository {
   async findOne(ident: string): Promise<User> {
     const dbQuery = await prisma.user.findFirst({
       where: {
-        OR: [{ email: ident }, { username: ident }, { id: ident }],
+        OR: [{ username: ident }, { id: ident }, { email: ident }],
       },
       include: {
         Profile: true,
         Player: true,
-        notifications: true,
       },
     });
 

@@ -1,3 +1,3 @@
 export interface IGetAccountDataRequest {
-  id: string;
+  ident: string;
 }

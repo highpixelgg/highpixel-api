@@ -74,6 +74,6 @@ Account.patch(
 
 Account.get('/users', adaptRoute(makeGetAllUsersController()));
 
-Account.get('/get-account/:id', adaptRoute(makeGetAccountDataController()));
+Account.get('/get-account/:ident', adaptRoute(makeGetAccountDataController()));
 
-export { Account };
+export { Account }; 

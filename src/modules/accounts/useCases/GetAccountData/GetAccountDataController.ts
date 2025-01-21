@@ -7,8 +7,8 @@ import { IGetAccountDataRequest } from "./GetAccountDataDTO";
 export class GetAccountDataController implements Controller {
   constructor(private getAccountData: GetAccountData) { }
 
-  async handle({ id }: IGetAccountDataRequest): Promise<HttpResponse> {
-    const result = await this.getAccountData.execute({ id });
+  async handle({ ident }: IGetAccountDataRequest): Promise<HttpResponse> {
+    const result = await this.getAccountData.execute({ ident });
 
     if (result.isLeft()) {
       const error = result.value;
