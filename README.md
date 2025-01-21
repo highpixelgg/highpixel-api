@@ -1,4 +1,4 @@
-# Thunder ⚡
+# Low Racing API ⚡
 ### Preview
 <img src="https://i.postimg.cc/wjVSLDCD/Home.png"/>
 
