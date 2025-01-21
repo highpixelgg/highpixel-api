@@ -1,4 +1,4 @@
-# Thunder ⚡
+# Low Racing API ⚡
 ### Preview
 <img src="https://i.postimg.cc/wjVSLDCD/Home.png"/>
 
@@ -56,4 +56,4 @@ CLOUDINARY_API_SECRET=[CLOUDINARY_API_SECRET]
 We appreciate you joining our development team fixing bugs, creating features or improving the ecosystem as a whole. Feel free to compile and create custom forks of the system. But first of all remember that this system is under license for non-commercial use. Also remember to read the CONTRIBUITE.pt.md file or in your native language before creating a PR or ISSUE.
 
 <br><br>
-Made with ❤️ by the Low Racing Team.
+Made with ❤️ by **Julio Developer**.
