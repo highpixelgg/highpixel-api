@@ -1,0 +1,42 @@
+# fly.toml file configuration
+
+app = "lowracing-api" # Replace with your Fly.io app name
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+  NODE_ENV = "production" # Set environment variables as needed
+
+[build]
+  # Use the Dockerfile for building the app
+  dockerfile = "Dockerfile"
+
+[deploy]
+  # Command to run after the app is deployed (e.g., migrations or other setup steps)
+  release_command = "npx prisma migrate deploy"
+
+[[services]]
+  # Internal port your app listens on (Node.js port)
+  internal_port = 4000
+
+  # Protocol and scaling settings
+  protocol = "tcp"
+  auto_start_machines = true
+  auto_stop_machines = true
+
+  [[services.ports]]
+    # External port mapping
+    port = 80 # External port for public HTTP access
+    handlers = ["http"]
+
+  [[services.ports]]
+    port = 443 # External port for HTTPS access
+    handlers = ["tls", "http"]
+
+  [[services.tcp_checks]]
+    grace_period = "10s" # Time to wait before starting health checks
+    interval = "15s" # Interval between health checks
+    timeout = "2s" # Timeout for each check
+    restart_limit = 0 # Restart limit for unhealthy instances
