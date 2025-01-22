@@ -9,4 +9,4 @@ RUN npx prisma generate
 
 CMD npx prisma db push && node src/server.ts
 
-EXPOSE 3000
+EXPOSE 4000
