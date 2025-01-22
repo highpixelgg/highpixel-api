@@ -1,12 +1,16 @@
 FROM node:20-alpine
 
 WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm install
+
 COPY . .
 
-RUN rm -rf node_modules
-RUN npm install && npx tsc
 RUN npx prisma generate
-
-CMD npx prisma db push && node src/infra/http/server.ts
+RUN npx tsc
 
 EXPOSE 4000
+
+CMD ["node", "dist/infra/http/server.js"]
