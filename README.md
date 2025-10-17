@@ -1,9 +1,9 @@
-# Low Racing API ⚡
+# High Pixel API ⚡
 ### Preview
 <img src="https://i.postimg.cc/wjVSLDCD/Home.png"/>
 
 ## Introduction
-Low Racing API is responsible for taking care of the entire Low Racing ecosystem.
+HighPixel API is responsible for taking care of the entire HighPixel ecosystem.
 
 ## Pre-requisites 
 - Node.js => 20
