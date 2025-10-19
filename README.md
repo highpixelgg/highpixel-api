@@ -1,6 +1,6 @@
 # High Pixel API ⚡
 ### Preview
-<img src="https://i.postimg.cc/FF23PFZ2/Home.png"/>
+<img src="https://cdn.discordapp.com/attachments/886686024393187438/1429287386810159114/-_Home.png?ex=68f5971b&is=68f4459b&hm=1817b0d2b64a93419ca655700b46fd2281f844a939240d557b869d98f1b60711"/>
 
 ## Introduction
 HighPixel API is responsible for taking care of the entire HighPixel ecosystem.
