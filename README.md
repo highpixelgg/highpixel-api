@@ -1,6 +1,6 @@
 # High Pixel API ⚡
 ### Preview
-<img src="https://i.postimg.cc/wjVSLDCD/Home.png"/>
+<img src="https://i.postimg.cc/FF23PFZ2/Home.png"/>
 
 ## Introduction
 HighPixel API is responsible for taking care of the entire HighPixel ecosystem.
